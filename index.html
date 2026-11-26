@@ -212,15 +212,16 @@
             <!-- Control Card: Ngày chạy -->
             <div class="col-span-2 lg:col-span-1 bg-white dark:bg-slate-900 rounded-2xl p-3 sm:p-3.5 shadow-xs border border-slate-200/80 dark:border-slate-800 flex items-center justify-between lg:flex-col lg:items-stretch lg:justify-between">
                 <div>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1.5 flex-wrap">
                         <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Tiến Độ Ngày</span>
-                        <span id="daysLeftPill" class="text-[11px] font-bold bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 px-2 py-0.5 rounded-md">Còn 7 ngày</span>
+                        <span id="daysLeftPill" class="text-[11px] font-bold bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 px-2 py-0.5 rounded-md">Còn 4 ngày</span>
+                        <button type="button" id="btnResetTodayDate" onclick="resetToTodayDate()" title="Quay về ngày hiện tại" class="hidden text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-sky-100 dark:bg-sky-900/60 text-sky-700 dark:text-sky-300 hover:bg-sky-200 transition">Hôm nay</button>
                     </div>
-                    <div class="text-[11px] text-slate-400 mt-0.5 lg:hidden">Bấm số ngày để tính lại tốc độ</div>
+                    <div id="todayDateHint" class="text-[10px] text-slate-400 mt-0.5">Mặc định hôm nay • Sửa để tính thử</div>
                 </div>
                 <div class="flex items-center gap-1.5 lg:mt-2">
                     <label for="daysPassedInput" class="hidden lg:inline text-xs text-slate-600 dark:text-slate-300 font-medium">Chạy:</label>
-                    <input id="daysPassedInput" type="number" inputmode="numeric" min="1" max="31" value="23" onchange="updateDaysPassed(this.value)"
+                    <input id="daysPassedInput" type="number" inputmode="numeric" min="1" max="31" value="26" onchange="updateDaysPassed(this.value)"
                         class="w-12 text-center font-extrabold text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl py-1.5 focus:outline-none focus:ring-2 focus:ring-navy-800">
                     <span class="text-xs font-semibold text-slate-400">/</span>
                     <input id="daysInMonthInput" type="number" inputmode="numeric" min="28" max="31" value="30" onchange="updateDaysInMonth(this.value)" title="Tổng số ngày trong tháng (28-31)"
@@ -248,6 +249,9 @@
                     <span class="text-xs font-semibold text-slate-500">tr</span>
                 </div>
                 <div id="kpiRevDelta" class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 mt-1 truncate">+21,07 tr vs Ngày 22/30</div>
+                <button type="button" id="kpiRevRankNote" onclick="scrollToTeamComparison('revenue')" title="Bấm để xem bảng xếp hạng doanh thu" class="mt-1.5 w-full text-left text-[10px] leading-snug font-semibold px-2 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-800 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800/70 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 transition">
+                    🏆 Đang tính hạng...
+                </button>
             </div>
 
             <!-- KPI 3: Cần chạy mỗi ngày -->
@@ -376,7 +380,7 @@
                             <th class="py-3 px-2 text-center w-14">ĐVT</th>
                             <th class="py-3 px-3 text-right w-24">Mục Tiêu</th>
                             <th id="thCompareCol" class="py-3 px-3 text-right w-24">Ngày 22/30</th>
-                            <th class="py-3 px-3 text-right w-28 bg-navy-800">Lũy Kế Mới ✎</th>
+                            <th class="py-3 px-3 text-right w-40 bg-navy-800">Lũy Kế Mới ✎ / Hạng</th>
                             <th class="py-3 px-3 text-right w-28">Thay Đổi</th>
                             <th class="py-3 px-3 text-right w-24">Còn Thiếu</th>
                             <th class="py-3 px-3 text-right w-28">Cần / Ngày</th>
@@ -388,6 +392,76 @@
                         <!-- Rows rendered by JS -->
                     </tbody>
                 </table>
+            </div>
+        </section>
+
+        <!-- Team Ranking & Peer Comparison Section -->
+        <section id="teamComparisonSection" class="bg-white dark:bg-slate-900 rounded-2xl p-3.5 sm:p-4 shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-slate-200 dark:border-slate-800">
+                <div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span class="inline-flex items-center justify-center w-6 h-6 rounded-lg bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-xs font-bold">🏆</span>
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-white">So Sánh Doanh Thu &amp; Vị Trí Ngành Hàng So Với Team</h3>
+                        <span id="teamDataSourceBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800">Dữ liệu mẫu minh họa</span>
+                    </div>
+                    <p id="teamComparisonSub" class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Tự động đối chiếu trực tiếp khi bạn sửa lũy kế hoặc bấm Đồng Bộ Drive</p>
+                </div>
+                <div class="inline-flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl p-1 self-start sm:self-auto shrink-0">
+                    <button type="button" id="teamTabRevBtn" onclick="setTeamTab('revenue')" class="min-h-[34px] px-3 py-1 rounded-lg text-xs font-bold bg-navy-800 text-white shadow-2xs transition">Xếp Hạng Doanh Thu</button>
+                    <button type="button" id="teamTabCatBtn" onclick="setTeamTab('categories')" class="min-h-[34px] px-3 py-1 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 transition">Vị Trí Ngành Hàng</button>
+                </div>
+            </div>
+
+            <!-- Panel 1: Revenue Leaderboard -->
+            <div id="teamRevPanel" class="space-y-2.5">
+                <div id="teamRevMySummary" class="p-3 rounded-xl bg-gradient-to-r from-indigo-50 via-sky-50 to-emerald-50/70 dark:from-indigo-950/50 dark:via-sky-950/40 dark:to-emerald-950/30 border border-indigo-200/80 dark:border-indigo-800/70 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs"></div>
+                <div class="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-xl">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead class="bg-slate-900 text-white text-[11px] uppercase">
+                            <tr>
+                                <th class="py-2.5 px-2.5 text-center w-14">Hạng</th>
+                                <th class="py-2.5 px-3 min-w-[155px]">Nhân Viên</th>
+                                <th class="py-2.5 px-3 text-right">Lũy Kế QĐ</th>
+                                <th class="py-2.5 px-3 text-right hidden sm:table-cell">Target</th>
+                                <th class="py-2.5 px-2.5 text-center">% HT</th>
+                                <th class="py-2.5 px-3 text-right min-w-[140px]">Chênh Lệch vs Thuận</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teamRevBody" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Panel 2: Category Position Comparison -->
+            <div id="teamCatPanel" class="hidden space-y-3">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div id="teamCatSummaryPills" class="flex items-center gap-1.5 flex-wrap"></div>
+                    <div class="flex items-center gap-1.5">
+                        <label for="teamCatInspectSelect" class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 shrink-0">Soi chi tiết:</label>
+                        <select id="teamCatInspectSelect" onchange="renderCategoryPeerInspector(this.value)"
+                            class="min-h-[34px] max-w-[230px] text-xs font-semibold bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-1 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Selected Category Full Peer Breakdown -->
+                <div id="teamCatInspectBox" class="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-2"></div>
+
+                <!-- Overview Table of All Categories' Rank -->
+                <div class="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-xl max-h-[42vh] overflow-y-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead class="bg-slate-900 text-white text-[11px] uppercase sticky top-0 z-10">
+                            <tr>
+                                <th class="py-2.5 px-3 min-w-[155px]">Ngành Hàng</th>
+                                <th class="py-2.5 px-2.5 text-center w-20">Hạng</th>
+                                <th class="py-2.5 px-3 text-right">Thuận LK</th>
+                                <th class="py-2.5 px-3 min-w-[165px]">Lưu Ý Lên Hạng Tiếp Theo</th>
+                                <th class="py-2.5 px-3 text-right min-w-[130px] hidden sm:table-cell">Top 1 Siêu Thị</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teamCatRankBody" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
+                    </table>
+                </div>
             </div>
         </section>
 
@@ -761,6 +835,8 @@
         const HISTORY_KEY = 'thi_dua_t11_thuan_168806_history_45d_v2';
         const PREFS_KEY = 'thi_dua_t11_thuan_168806_prefs_v2';
         const MAX_HISTORY_DAYS = 45;
+        const MY_EMP_ID = '168806';
+        const MY_EMP_NAME = 'Đoàn Phạm Quang Thuận';
 
         let currentFilter = 'all';
         let justUpdatedStts = new Set();
@@ -770,11 +846,215 @@
         let compareRefId = 'auto';
         let viewMode = window.innerWidth < 768 ? 'cards' : 'table';
         let isDarkMode = false;
+        let isManualDayOverride = false;
+        let activeTeamTab = 'revenue';
+        let inspectedCategoryName = '';
         const DEFAULT_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwvQ77k6Y8kaKG86GyQD2_vxQSwsHHAM6lhZzpkWHO6_vBCvexkzo89mIHIw9D9x6px/exec';
         let appsScriptUrl = DEFAULT_APPS_SCRIPT_URL;
         let autoSyncOnLoad = true;
         let lastDriveRawJson = '';
         let isSyncingDrive = false;
+
+        // Lấy ngày hiện tại và tổng số ngày thực tế của tháng hiện tại
+        function getTodayProgressDefaults() {
+            const now = new Date();
+            const day = now.getDate();
+            const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+            const monthPrefix = 'T' + (now.getMonth() + 1);
+            return { day, daysInMonth, monthPrefix };
+        }
+
+        // Tạo dữ liệu mẫu đồng đội để hiển thị ngay khi chưa đồng bộ team_ranking từ Drive
+        function buildDefaultSampleTeam(items, myRevenue, myTarget) {
+            const peers = [
+                { id: '101804', name: 'Phạm Hiền Diệu', revFactor: 1.24, catSeed: 1.22 },
+                { id: '193603', name: 'Trịnh Thị Oanh Oanh', revFactor: 1.13, catSeed: 1.12 },
+                { id: '142210', name: 'Nguyễn Minh Quân', revFactor: 1.04, catSeed: 1.03 },
+                { id: '175422', name: 'Lê Hoàng Nam', revFactor: 0.94, catSeed: 0.92 },
+                { id: '188319', name: 'Trần Thị Mỹ Linh', revFactor: 0.87, catSeed: 0.84 },
+                { id: '201945', name: 'Võ Thành Đạt', revFactor: 0.78, catSeed: 0.75 },
+                { id: '214508', name: 'Huỳnh Ngọc Hân', revFactor: 0.69, catSeed: 0.66 }
+            ];
+
+            const baseRev = myRevenue > 0 ? myRevenue : 792.79;
+            const baseTg = myTarget > 0 ? myTarget : 1617.00;
+            const members = peers.map((p, pIdx) => {
+                const cats = {};
+                (items || INITIAL_STATE.items).forEach((it, idx) => {
+                    // Tạo biến thiên tự nhiên theo từng ngành để Thuận có ngành Top 1, Top 2-3 và ngành cần bám đuổi
+                    const wave = (((idx * 7 + pIdx * 5) % 11) - 5) * 0.11;
+                    const mult = Math.max(0.15, p.catSeed + wave);
+                    const baseVal = it.curr > 0 ? it.curr : (it.target > 0 ? it.target * 0.18 : 0);
+                    const val = baseVal * mult;
+                    cats[it.name] = it.unit === 'SL'
+                        ? Math.max(0, Math.round(val))
+                        : Number(Math.max(0, val).toFixed(2));
+                });
+                return {
+                    id: p.id,
+                    name: p.name,
+                    revenue: Number((baseRev * p.revFactor).toFixed(2)),
+                    target: Number(baseTg.toFixed(2)),
+                    categories: cats
+                };
+            });
+
+            return {
+                isSampleData: true,
+                members
+            };
+        }
+
+        function shortEmpName(fullName) {
+            const parts = String(fullName || '').trim().split(/\s+/).filter(Boolean);
+            if (parts.length <= 2) return parts.join(' ');
+            return parts.slice(-2).join(' ');
+        }
+
+        // Luôn ghép dữ liệu mới nhất của Thuận (168806) vào danh sách team để xếp hạng nhảy theo thời gian thực
+        function getLiveTeamMembers() {
+            if (!appState.teamRanking || !Array.isArray(appState.teamRanking.members) || appState.teamRanking.members.length === 0) {
+                appState.teamRanking = buildDefaultSampleTeam(appState.items, appState.currTotalRevenue, appState.totalTarget);
+            }
+            const myCats = {};
+            appState.items.forEach(it => {
+                myCats[it.name] = it.curr;
+            });
+            const myRecord = {
+                id: MY_EMP_ID,
+                name: MY_EMP_NAME,
+                revenue: Number(appState.currTotalRevenue || 0),
+                target: Number(appState.totalTarget || 0),
+                categories: myCats,
+                isMe: true
+            };
+
+            const others = appState.teamRanking.members
+                .filter(m => String(m.id || '').indexOf(MY_EMP_ID) === -1 && normalizeText(m.name) !== normalizeText(MY_EMP_NAME))
+                .map(m => ({ ...m, isMe: false }));
+
+            return [myRecord, ...others];
+        }
+
+        function getMemberCategoryValue(member, item) {
+            if (member.isMe) return Number(item.curr || 0);
+            const map = member.categories || {};
+            if (typeof map[item.name] === 'number') return map[item.name];
+            const normTarget = normalizeText(item.name);
+            for (const [k, v] of Object.entries(map)) {
+                if (typeof v === 'number' && normalizeText(k) === normTarget) return v;
+            }
+            for (const [k, v] of Object.entries(map)) {
+                if (typeof v === 'number') {
+                    const nk = normalizeText(k);
+                    if (nk && (nk === normalizeText(item.short) || (item.aliases || []).some(a => normalizeText(a) === nk))) {
+                        return v;
+                    }
+                }
+            }
+            return 0;
+        }
+
+        // Tính hạng hiện tại & chính xác số cần thêm để vượt người đứng ngay trên
+        function computeRankMetrics(entries, unit) {
+            const total = entries.length;
+            if (total === 0) return { rank: 1, total: 1, sorted: [], needToNext: 0, nextRank: 1, nextPeer: null, top1: null, leadOverSecond: 0, secondPeer: null, isTiedTop1: false };
+
+            const sorted = [...entries].sort((a, b) => {
+                if (b.value !== a.value) return b.value - a.value;
+                return a.isMe ? -1 : (b.isMe ? 1 : a.name.localeCompare(b.name));
+            });
+
+            const me = sorted.find(e => e.isMe) || sorted[0];
+            const strictlyHigher = sorted.filter(e => e.value > me.value);
+            const rank = strictlyHigher.length + 1;
+            const top1 = sorted[0];
+
+            if (rank === 1) {
+                const otherPeers = sorted.filter(e => !e.isMe);
+                const secondPeer = otherPeers.length > 0 ? otherPeers[0] : null;
+                const leadOverSecond = secondPeer ? Number((me.value - secondPeer.value).toFixed(2)) : 0;
+                const isTiedTop1 = !!(secondPeer && leadOverSecond === 0);
+                return {
+                    rank: 1,
+                    total,
+                    sorted,
+                    needToNext: isTiedTop1 ? (unit === 'SL' ? 1 : 0.01) : 0,
+                    nextRank: 1,
+                    nextPeer: secondPeer,
+                    top1,
+                    leadOverSecond,
+                    secondPeer,
+                    isTiedTop1
+                };
+            }
+
+            // Người đứng sát ngay phía trên mình (có giá trị nhỏ nhất trong nhóm cao hơn mình)
+            const nextPeer = strictlyHigher[strictlyHigher.length - 1];
+            const rawDiff = Number((nextPeer.value - me.value).toFixed(2));
+            const step = unit === 'SL' ? 1 : 0.01;
+            const needToNext = rawDiff > 0
+                ? (unit === 'SL' ? (Number.isInteger(rawDiff) ? rawDiff : Number(rawDiff.toFixed(1))) : rawDiff)
+                : step;
+
+            return {
+                rank,
+                total,
+                sorted,
+                needToNext,
+                nextRank: rank - 1,
+                nextPeer,
+                top1,
+                leadOverSecond: 0,
+                secondPeer: null,
+                isTiedTop1: false
+            };
+        }
+
+        function calcRevenueRankInfo() {
+            const members = getLiveTeamMembers();
+            const entries = members.map(m => ({
+                id: m.id,
+                name: m.name,
+                value: Number(m.revenue || 0),
+                target: Number(m.target || 0),
+                isMe: !!m.isMe
+            }));
+            return computeRankMetrics(entries, 'Tr.đ');
+        }
+
+        function calcCategoryRankInfo(item) {
+            const members = getLiveTeamMembers();
+            const entries = members.map(m => ({
+                id: m.id,
+                name: m.name,
+                value: getMemberCategoryValue(m, item),
+                isMe: !!m.isMe
+            }));
+            return computeRankMetrics(entries, item.unit);
+        }
+
+        function formatRankHintShort(rankInfo, unit, compact = false) {
+            const unitTxt = unit === 'Tr.đ' ? ' tr' : ' SL';
+            if (rankInfo.rank === 1) {
+                if (rankInfo.isTiedTop1 && rankInfo.secondPeer) {
+                    const minStep = unit === 'SL' ? '1 SL' : '0,01 tr';
+                    return compact
+                        ? `🥇 #1/${rankInfo.total} (Đồng hạng) • +${minStep} tách top`
+                        : `🥇 Đồng Hạng 1/${rankInfo.total} • Thêm +${minStep} để độc chiếm #1`;
+                }
+                const leadStr = formatNum(rankInfo.leadOverSecond, unit) + unitTxt;
+                const peerShort = rankInfo.secondPeer ? shortEmpName(rankInfo.secondPeer.name) : '#2';
+                return compact
+                    ? `🥇 #1/${rankInfo.total} • Hơn #2: +${leadStr}`
+                    : `🥇 Top 1/${rankInfo.total} • Hơn Hạng 2 (${peerShort}): +${leadStr}`;
+            }
+            const needStr = formatNum(rankInfo.needToNext, unit) + unitTxt;
+            const peerShort = rankInfo.nextPeer ? shortEmpName(rankInfo.nextPeer.name) : `Hạng ${rankInfo.nextRank}`;
+            return compact
+                ? `🏅 #${rankInfo.rank}/${rankInfo.total} • +${needStr} → #${rankInfo.nextRank}`
+                : `🏅 Hạng ${rankInfo.rank}/${rankInfo.total} • Cần +${needStr} để lên Hạng ${rankInfo.nextRank} (${peerShort})`;
+        }
 
         // --- HÀM CHUẨN HÓA & ĐỒNG NGHĨA ---
         function normalizeText(str) {
@@ -949,6 +1229,10 @@
             showToast("Đã lưu đường link đồng bộ Google Drive!");
         }
 
+        function isPreviewSandboxEnv() {
+            return window.location.protocol === 'blob:' || window.location.origin === 'null';
+        }
+
         async function syncFromGoogleDrive(silent = false) {
             if (isSyncingDrive) return;
             if (!appsScriptUrl || !appsScriptUrl.startsWith('http')) {
@@ -963,6 +1247,11 @@
                 return;
             }
 
+            // Khung Preview (blob:) thường chặn kết nối ra ngoài Google Drive; tránh tự chạy ngầm gây lỗi console
+            if (silent && isPreviewSandboxEnv()) {
+                return;
+            }
+
             isSyncingDrive = true;
             const icon1 = document.getElementById('syncDriveHeaderIcon');
             const icon2 = document.getElementById('syncDriveMobileIcon');
@@ -973,11 +1262,23 @@
             try {
                 const sep = appsScriptUrl.includes('?') ? '&' : '?';
                 const fetchUrl = `${appsScriptUrl}${sep}_t=${Date.now()}`;
-                const response = await fetch(fetchUrl, { method: 'GET', redirect: 'follow' });
+                const response = await fetch(fetchUrl, {
+                    method: 'GET',
+                    mode: 'cors',
+                    credentials: 'omit',
+                    redirect: 'follow'
+                });
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}`);
                 }
-                const parsedJson = await response.json();
+                const rawText = await response.text();
+                let parsedJson;
+                try {
+                    parsedJson = JSON.parse(rawText);
+                } catch (parseErr) {
+                    throw new Error('INVALID_JSON_RESPONSE');
+                }
+
                 lastDriveRawJson = JSON.stringify(parsedJson, null, 2);
                 const debugBox = document.getElementById('driveDebugBox');
                 if (debugBox) debugBox.value = lastDriveRawJson;
@@ -995,8 +1296,19 @@
                 closeSettingsModal();
                 applyJsonPayload(parsedJson, "Đồng bộ từ Google Drive");
             } catch (err) {
-                console.error("Sync Drive error:", err);
-                if (!silent) showToast("Không đọc được dữ liệu từ link! Kiểm tra quyền 'Bất kỳ ai' khi Deploy.");
+                const diagEl = document.getElementById('driveSyncDiagSummary');
+                const isSandbox = isPreviewSandboxEnv();
+                const errMsg = err && err.message === 'INVALID_JSON_RESPONSE'
+                    ? "Apps Script trả về HTML lỗi thay vì JSON — kiểm tra lại code Mã.gs và quyền Deploy 'Bất kỳ ai'."
+                    : (isSandbox
+                        ? "Khung xem trước (Preview) đang chặn kết nối ra Google Drive. Hãy mở qua link GitHub Pages để đồng bộ hoặc dùng 'Dán JSON'."
+                        : "Không kết nối được Apps Script (CORS/Mạng). Kiểm tra quyền Deploy 'Bất kỳ ai' và đảm bảo Mã.gs không bị lỗi chạy.");
+
+                if (diagEl) {
+                    diagEl.innerHTML = `<strong class="text-rose-600">Lỗi đồng bộ:</strong> ${errMsg}`;
+                    diagEl.classList.remove('hidden');
+                }
+                if (!silent) showToast(errMsg);
             } finally {
                 isSyncingDrive = false;
                 if (icon1) icon1.classList.remove('animate-spin');
@@ -1031,18 +1343,18 @@
         }
 
         function loadState() {
+            const today = getTodayProgressDefaults();
             try {
                 const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('thi_dua_t11_thuan_168806_v7');
                 if (saved) {
                     const parsed = JSON.parse(saved);
                     if (parsed && Array.isArray(parsed.items) && parsed.items.length > 0) {
-                        if (!parsed.daysInMonth || parsed.daysInMonth < 28 || parsed.daysInMonth > 31) {
-                            parsed.daysInMonth = getDaysForMonthPrefix(extractMonthPrefix(parsed.items[0].name)) || 30;
-                        }
+                        // Mặc định luôn khởi chạy theo ngày hiện tại / số ngày thực tế của tháng hiện tại
+                        parsed.daysPassed = today.day;
+                        parsed.daysInMonth = today.daysInMonth;
                         if (!parsed.monthPrefix) {
-                            parsed.monthPrefix = extractMonthPrefix(parsed.items[0].name) || 'T11';
+                            parsed.monthPrefix = extractMonthPrefix(parsed.items[0].name) || today.monthPrefix;
                         }
-                        // Chuyển đổi danh sách tick ca từ STT cũ sang tên ngành chuẩn hóa
                         if (!Array.isArray(parsed.shiftCheckedNames)) {
                             parsed.shiftCheckedNames = [];
                             if (Array.isArray(parsed.shiftCheckedStts)) {
@@ -1052,13 +1364,20 @@
                                 });
                             }
                         }
+                        if (!parsed.teamRanking || !Array.isArray(parsed.teamRanking.members) || parsed.teamRanking.members.length === 0) {
+                            parsed.teamRanking = buildDefaultSampleTeam(parsed.items, parsed.currTotalRevenue, parsed.totalTarget);
+                        }
                         return parsed;
                     }
                 }
             } catch (e) {
                 console.error("Error loading state:", e);
             }
-            return JSON.parse(JSON.stringify(INITIAL_STATE));
+            const fresh = JSON.parse(JSON.stringify(INITIAL_STATE));
+            fresh.daysPassed = today.day;
+            fresh.daysInMonth = today.daysInMonth;
+            fresh.teamRanking = buildDefaultSampleTeam(fresh.items, fresh.currTotalRevenue, fresh.totalTarget);
+            return fresh;
         }
 
         let appState = loadState();
@@ -1579,21 +1898,250 @@
         }
 
         function updateDaysPassed(val) {
-            const dim = appState.daysInMonth || 30;
-            const n = Math.max(1, Math.min(dim, parseInt(val, 10) || 23));
+            const dim = appState.daysInMonth || getTodayProgressDefaults().daysInMonth;
+            const n = Math.max(1, Math.min(dim, parseInt(val, 10) || getTodayProgressDefaults().day));
             appState.daysPassed = n;
+            const today = getTodayProgressDefaults();
+            isManualDayOverride = (n !== today.day || dim !== today.daysInMonth);
             saveState();
             renderTable();
-            showToast(`Đã cập nhật ngày chạy: ${n}/${dim} (Còn ${Math.max(0, dim - n)} ngày)`);
+            showToast(`Đang xem giả lập ngày ${n}/${dim} (Còn ${Math.max(0, dim - n)} ngày)`);
         }
 
         function updateDaysInMonth(val) {
-            const dim = Math.max(28, Math.min(31, parseInt(val, 10) || 30));
+            const dim = Math.max(28, Math.min(31, parseInt(val, 10) || getTodayProgressDefaults().daysInMonth));
             appState.daysInMonth = dim;
             if (appState.daysPassed > dim) appState.daysPassed = dim;
+            const today = getTodayProgressDefaults();
+            isManualDayOverride = (appState.daysPassed !== today.day || dim !== today.daysInMonth);
             saveState();
             renderTable();
             showToast(`Đã cập nhật tổng số ngày trong tháng: ${dim} ngày`);
+        }
+
+        function resetToTodayDate() {
+            const today = getTodayProgressDefaults();
+            appState.daysPassed = today.day;
+            appState.daysInMonth = today.daysInMonth;
+            isManualDayOverride = false;
+            saveState();
+            renderTable();
+            showToast(`Đã đưa tiến độ về hôm nay: Ngày ${today.day}/${today.daysInMonth}`);
+        }
+
+        function scrollToTeamComparison(tabKey = 'revenue') {
+            if (isTableFullscreen) toggleTableFullscreen();
+            setTeamTab(tabKey);
+            const sec = document.getElementById('teamComparisonSection');
+            if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function openCategoryPeerViewByStt(stt) {
+            const item = appState.items.find(x => x.stt === stt);
+            if (!item) return;
+            if (isTableFullscreen) toggleTableFullscreen();
+            inspectedCategoryName = item.name;
+            setTeamTab('categories');
+            const sel = document.getElementById('teamCatInspectSelect');
+            if (sel) sel.value = item.name;
+            renderCategoryPeerInspector(item.name);
+            const sec = document.getElementById('teamComparisonSection');
+            if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function setTeamTab(tabKey) {
+            activeTeamTab = tabKey === 'categories' ? 'categories' : 'revenue';
+            const revBtn = document.getElementById('teamTabRevBtn');
+            const catBtn = document.getElementById('teamTabCatBtn');
+            const revPanel = document.getElementById('teamRevPanel');
+            const catPanel = document.getElementById('teamCatPanel');
+
+            if (activeTeamTab === 'revenue') {
+                if (revBtn) revBtn.className = 'min-h-[34px] px-3 py-1 rounded-lg text-xs font-bold bg-navy-800 dark:bg-sky-600 text-white shadow-2xs transition';
+                if (catBtn) catBtn.className = 'min-h-[34px] px-3 py-1 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 transition';
+                if (revPanel) revPanel.classList.remove('hidden');
+                if (catPanel) catPanel.classList.add('hidden');
+            } else {
+                if (catBtn) catBtn.className = 'min-h-[34px] px-3 py-1 rounded-lg text-xs font-bold bg-navy-800 dark:bg-sky-600 text-white shadow-2xs transition';
+                if (revBtn) revBtn.className = 'min-h-[34px] px-3 py-1 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 transition';
+                if (catPanel) catPanel.classList.remove('hidden');
+                if (revPanel) revPanel.classList.add('hidden');
+            }
+        }
+
+        function renderTeamComparisonSection() {
+            const isSample = !appState.teamRanking || appState.teamRanking.isSampleData !== false;
+            const badge = document.getElementById('teamDataSourceBadge');
+            const sub = document.getElementById('teamComparisonSub');
+            if (badge) {
+                if (isSample) {
+                    badge.textContent = 'Dữ liệu mẫu minh họa';
+                    badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800';
+                } else {
+                    badge.textContent = 'Dữ liệu thực từ Drive';
+                    badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800';
+                }
+            }
+            if (sub) {
+                sub.textContent = isSample
+                    ? 'Đang hiển thị danh sách đồng đội mẫu để xem thử — cập nhật Apps Script & bấm Đồng Bộ Drive để lấy bảng xếp hạng thực tế.'
+                    : 'Dữ liệu xếp hạng thực tế từ Google Drive • Tự động cập nhật hạng ngay khi bạn chỉnh thử lũy kế.';
+            }
+
+            // 1. Render Revenue Leaderboard
+            const revRank = calcRevenueRankInfo();
+            const myRev = Number(appState.currTotalRevenue || 0);
+            const summaryEl = document.getElementById('teamRevMySummary');
+            if (summaryEl) {
+                const top1 = revRank.top1;
+                const gapTop1 = top1 ? Number((top1.value - myRev).toFixed(2)) : 0;
+                const nextLine = formatRankHintShort(revRank, 'Tr.đ', false);
+                summaryEl.innerHTML = `
+                    <div class="font-bold text-indigo-950 dark:text-indigo-200">${nextLine}</div>
+                    <div class="text-[11px] text-slate-600 dark:text-slate-300">
+                        ${revRank.rank === 1
+                            ? `Đang dẫn đầu siêu thị (${revRank.total} NV)`
+                            : `Cách Top 1 (${shortEmpName(top1.name)}): <strong class="text-rose-600 dark:text-rose-400">+${formatNum(gapTop1, 'Tr.đ')} tr</strong>`}
+                    </div>
+                `;
+            }
+
+            const revBody = document.getElementById('teamRevBody');
+            if (revBody) {
+                revBody.innerHTML = revRank.sorted.map((m, idx) => {
+                    const pos = idx + 1;
+                    const medal = pos === 1 ? '🥇' : (pos === 2 ? '🥈' : (pos === 3 ? '🥉' : `#${pos}`));
+                    const pct = m.target > 0 ? ((m.value / m.target) * 100) : 0;
+                    const diffVsMe = Number((m.value - myRev).toFixed(2));
+                    let diffHtml = `<span class="font-bold text-indigo-700 dark:text-indigo-300">Bạn (Mốc gốc)</span>`;
+                    if (!m.isMe) {
+                        if (diffVsMe > 0) {
+                            diffHtml = `<span class="font-semibold text-rose-600 dark:text-rose-400">Hơn bạn +${formatNum(diffVsMe, 'Tr.đ')} tr</span>`;
+                        } else if (diffVsMe < 0) {
+                            diffHtml = `<span class="font-semibold text-emerald-600 dark:text-emerald-400">Kém bạn ${formatNum(diffVsMe, 'Tr.đ')} tr</span>`;
+                        } else {
+                            diffHtml = `<span class="text-slate-400">Bằng bạn</span>`;
+                        }
+                    }
+                    const rowCls = m.isMe
+                        ? 'bg-sky-50/90 dark:bg-sky-950/50 font-semibold'
+                        : 'hover:bg-slate-50 dark:hover:bg-slate-800/50';
+                    const isNextTarget = revRank.nextPeer && revRank.nextPeer.id === m.id && revRank.rank > 1;
+                    const nextBadge = isNextTarget
+                        ? `<span class="ml-1 px-1.5 py-0.5 rounded bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-300 text-[10px] font-bold">Mục tiêu vượt</span>`
+                        : '';
+                    return `
+                    <tr class="${rowCls}">
+                        <td class="py-2 px-2.5 text-center font-extrabold ${pos <= 3 ? 'text-sm' : 'text-slate-500'}">${medal}</td>
+                        <td class="py-2 px-3">
+                            <div class="font-bold ${m.isMe ? 'text-navy-900 dark:text-sky-300' : 'text-slate-800 dark:text-slate-200'}">
+                                ${m.name} ${m.isMe ? '<span class="ml-1 px-1.5 py-0.5 rounded bg-navy-800 text-white text-[10px]">Tôi</span>' : ''}${nextBadge}
+                            </div>
+                            <div class="text-[10px] text-slate-400">Mã NV: ${m.id || '--'}</div>
+                        </td>
+                        <td class="py-2 px-3 text-right font-extrabold ${m.isMe ? 'text-navy-900 dark:text-sky-300' : 'text-slate-800 dark:text-slate-100'}">${formatNum(m.value, 'Tr.đ')} tr</td>
+                        <td class="py-2 px-3 text-right text-slate-500 hidden sm:table-cell">${m.target > 0 ? formatNum(m.target, 'Tr.đ') + ' tr' : '--'}</td>
+                        <td class="py-2 px-2.5 text-center font-bold ${pct >= 75 ? 'text-emerald-600 dark:text-emerald-400' : (pct >= 50 ? 'text-amber-600 dark:text-amber-400' : 'text-rose-600 dark:text-rose-400')}">${m.target > 0 ? pct.toFixed(1).replace('.', ',') + '%' : '--'}</td>
+                        <td class="py-2 px-3 text-right">${diffHtml}</td>
+                    </tr>`;
+                }).join('');
+            }
+
+            // 2. Render Category Position Overview
+            let top1Count = 0, top23Count = 0, closeUpCount = 0;
+            const catRanks = appState.items.map(item => {
+                const r = calcCategoryRankInfo(item);
+                if (r.rank === 1) top1Count++;
+                else if (r.rank <= 3) top23Count++;
+                if (r.rank > 1 && item.target > 0 && (r.needToNext / item.target) <= 0.15) closeUpCount++;
+                return { item, r };
+            });
+
+            const pillsEl = document.getElementById('teamCatSummaryPills');
+            if (pillsEl) {
+                pillsEl.innerHTML = `
+                    <span class="px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-[11px] font-bold">🥇 Top 1: ${top1Count} môn</span>
+                    <span class="px-2.5 py-1 rounded-lg bg-sky-50 dark:bg-sky-950/60 border border-sky-200 dark:border-sky-800 text-sky-800 dark:text-sky-300 text-[11px] font-bold">🏅 Top 2–3: ${top23Count} môn</span>
+                    <span class="px-2.5 py-1 rounded-lg bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300 text-[11px] font-bold">⚡ Dễ vượt hạng: ${closeUpCount} môn</span>
+                `;
+            }
+
+            const selEl = document.getElementById('teamCatInspectSelect');
+            if (selEl) {
+                if (!inspectedCategoryName || !appState.items.some(it => it.name === inspectedCategoryName)) {
+                    inspectedCategoryName = appState.items[0] ? appState.items[0].name : '';
+                }
+                selEl.innerHTML = catRanks.map(({ item, r }) =>
+                    `<option value="${item.name.replace(/"/g, '&quot;')}" ${item.name === inspectedCategoryName ? 'selected' : ''}>#${r.rank}/${r.total} • ${item.short}</option>`
+                ).join('');
+                renderCategoryPeerInspector(inspectedCategoryName);
+            }
+
+            const catBody = document.getElementById('teamCatRankBody');
+            if (catBody) {
+                const sortedByRank = [...catRanks].sort((a, b) => a.r.rank - b.r.rank || a.r.needToNext - b.r.needToNext);
+                catBody.innerHTML = sortedByRank.map(({ item, r }) => {
+                    const unitTxt = item.unit === 'Tr.đ' ? ' tr' : ' SL';
+                    const rankBadgeCls = r.rank === 1
+                        ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300'
+                        : (r.rank <= 3 ? 'bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-300' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300');
+                    const noteText = formatRankHintShort(r, item.unit, false);
+                    const top1Txt = r.top1
+                        ? `<span class="font-semibold text-slate-700 dark:text-slate-200">${shortEmpName(r.top1.name)}</span> <span class="text-slate-400">(${formatNum(r.top1.value, item.unit)}${unitTxt})</span>`
+                        : '--';
+                    return `
+                    <tr onclick="openCategoryPeerViewByStt(${item.stt})" class="cursor-pointer hover:bg-indigo-50/50 dark:hover:bg-slate-800/60 transition">
+                        <td class="py-2 px-3">
+                            <div class="font-bold text-slate-800 dark:text-slate-100">${item.short}</div>
+                            <div class="text-[10px] text-slate-400 truncate max-w-[180px]">${item.name.replace(/^T\d+\s*-\s*/i, '')}</div>
+                        </td>
+                        <td class="py-2 px-2.5 text-center">
+                            <span class="inline-block px-2 py-0.5 rounded-lg font-extrabold text-[11px] ${rankBadgeCls}">${r.rank === 1 ? '🥇' : ''} #${r.rank}/${r.total}</span>
+                        </td>
+                        <td class="py-2 px-3 text-right font-extrabold text-navy-900 dark:text-sky-300">${formatNum(item.curr, item.unit)}${unitTxt}</td>
+                        <td class="py-2 px-3 text-[11px] font-medium ${r.rank === 1 ? 'text-emerald-700 dark:text-emerald-400' : 'text-indigo-700 dark:text-indigo-300'}">${noteText}</td>
+                        <td class="py-2 px-3 text-right text-[11px] hidden sm:table-cell">${top1Txt}</td>
+                    </tr>`;
+                }).join('');
+            }
+        }
+
+        function renderCategoryPeerInspector(catName) {
+            inspectedCategoryName = catName;
+            const box = document.getElementById('teamCatInspectBox');
+            if (!box) return;
+            const item = appState.items.find(it => it.name === catName) || appState.items[0];
+            if (!item) {
+                box.innerHTML = '';
+                return;
+            }
+            const r = calcCategoryRankInfo(item);
+            const unitTxt = item.unit === 'Tr.đ' ? ' tr' : ' SL';
+            const maxVal = Math.max(0.01, ...r.sorted.map(x => x.value));
+
+            const barsHtml = r.sorted.map((m, idx) => {
+                const pos = idx + 1;
+                const widthPct = Math.max(4, Math.min(100, (m.value / maxVal) * 100));
+                const isNext = r.nextPeer && r.nextPeer.id === m.id && r.rank > 1;
+                const barCls = m.isMe ? 'bg-sky-500' : (isNext ? 'bg-amber-500' : 'bg-slate-300 dark:bg-slate-700');
+                return `
+                <div class="flex items-center gap-2 text-[11px] ${m.isMe ? 'font-bold text-navy-900 dark:text-sky-300' : 'text-slate-600 dark:text-slate-300'}">
+                    <span class="w-6 text-center font-bold shrink-0">${pos === 1 ? '🥇' : '#' + pos}</span>
+                    <span class="w-28 sm:w-36 truncate shrink-0">${shortEmpName(m.name)}${m.isMe ? ' (Tôi)' : ''}</span>
+                    <div class="flex-1 bg-slate-200/80 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                        <div class="${barCls} h-2 rounded-full transition-all" style="width: ${widthPct}%"></div>
+                    </div>
+                    <span class="w-16 text-right font-bold shrink-0">${formatNum(m.value, item.unit)}${unitTxt}</span>
+                </div>`;
+            }).join('');
+
+            box.innerHTML = `
+                <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-200 dark:border-slate-800">
+                    <div class="font-bold text-xs text-slate-900 dark:text-white">Chi tiết xếp hạng: ${item.name.replace(/^T\d+\s*-\s*/i, '')}</div>
+                    <div class="text-[11px] font-bold ${r.rank === 1 ? 'text-emerald-600 dark:text-emerald-400' : 'text-indigo-700 dark:text-indigo-300'}">${formatRankHintShort(r, item.unit, false)}</div>
+                </div>
+                <div class="space-y-1.5">${barsHtml}</div>
+            `;
         }
 
         function updateTotalTarget(val) {
@@ -1685,14 +2233,15 @@
         }
 
         function renderHeaderAndKPIs(baselineObj) {
-            const daysInMonth = Math.max(28, Math.min(31, Number(appState.daysInMonth) || 30));
-            const daysPassed = Math.max(1, Math.min(daysInMonth, Number(appState.daysPassed) || 23));
+            const today = getTodayProgressDefaults();
+            const daysInMonth = Math.max(28, Math.min(31, Number(appState.daysInMonth) || today.daysInMonth));
+            const daysPassed = Math.max(1, Math.min(daysInMonth, Number(appState.daysPassed) || today.day));
             const daysLeft = Math.max(0, daysInMonth - daysPassed);
             const totalItemsCount = appState.items.length;
 
             syncCompareSelectDropdown(baselineObj);
 
-            document.getElementById('mainHeaderTitle').textContent = `Thi Đua ${totalItemsCount} Ngành (${appState.monthPrefix || 'T11'}) — Thuận (168806)`;
+            document.getElementById('mainHeaderTitle').textContent = `Thi Đua ${totalItemsCount} Ngành (${appState.monthPrefix || today.monthPrefix}) — Thuận (168806)`;
             document.getElementById('strategicGroupTitle').textContent = `Phân Nhóm Chiến Thuật Chạy Số ${totalItemsCount} Ngành Hàng`;
             document.getElementById('badgeDate').textContent = `Ngày ${daysPassed}/${daysInMonth} • Còn ${daysLeft} ngày`;
             const syncBadge = document.getElementById('badgeLastSync');
@@ -1707,6 +2256,20 @@
             document.getElementById('daysLeftPill').textContent = `Còn ${daysLeft} ngày`;
             document.getElementById('daysPassedInput').value = daysPassed;
             document.getElementById('daysInMonthInput').value = daysInMonth;
+
+            const isTodayActive = (daysPassed === today.day && daysInMonth === today.daysInMonth);
+            const resetTodayBtn = document.getElementById('btnResetTodayDate');
+            const todayHintEl = document.getElementById('todayDateHint');
+            if (resetTodayBtn) {
+                if (isTodayActive) resetTodayBtn.classList.add('hidden');
+                else resetTodayBtn.classList.remove('hidden');
+            }
+            if (todayHintEl) {
+                todayHintEl.textContent = isTodayActive
+                    ? `Đang lấy hôm nay (${today.day}/${today.daysInMonth}) • Sửa để tính thử`
+                    : `Đang giả lập • Hôm nay là ${today.day}/${today.daysInMonth}`;
+            }
+
             document.getElementById('totalTargetInput').value = Number(appState.totalTarget || 0).toFixed(2);
             document.getElementById('totalRevenueInput').value = Number(appState.currTotalRevenue || 0).toFixed(2);
             document.getElementById('kpiTargetSub').textContent = `${Number(appState.totalTarget || 0).toLocaleString('vi-VN', { maximumFractionDigits: 0 })} triệu đồng`;
@@ -1723,6 +2286,18 @@
             } else {
                 revDeltaEl.textContent = `Chưa đổi vs ${baselineObj.label}`;
                 revDeltaEl.className = "text-[11px] text-slate-400 mt-1 truncate";
+            }
+
+            // Lưu ý nhỏ cần thêm bao nhiêu doanh thu để lên hạng tiếp theo
+            const revRankNoteEl = document.getElementById('kpiRevRankNote');
+            if (revRankNoteEl) {
+                const revRank = calcRevenueRankInfo();
+                revRankNoteEl.textContent = formatRankHintShort(revRank, 'Tr.đ', false);
+                if (revRank.rank === 1) {
+                    revRankNoteEl.className = 'mt-1.5 w-full text-left text-[10px] leading-snug font-semibold px-2 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/70 hover:bg-emerald-100 transition';
+                } else {
+                    revRankNoteEl.className = 'mt-1.5 w-full text-left text-[10px] leading-snug font-semibold px-2 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-800 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800/70 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 transition';
+                }
             }
 
             const remTotal = Math.max(0, appState.totalTarget - appState.currTotalRevenue);
@@ -1881,6 +2456,7 @@
 
             renderMobileCards(enriched);
             renderDesktopTable(enriched);
+            renderTeamComparisonSection();
         }
 
         function renderMobileCards(enriched) {
@@ -1894,6 +2470,12 @@
 
             container.innerHTML = enriched.map(({ item, m, isShiftDone }, idx) => {
                 const isJustUpdated = justUpdatedStts.has(item.stt);
+                const rankInfo = calcCategoryRankInfo(item);
+                const rankNoteText = formatRankHintShort(rankInfo, item.unit, false);
+                const rankPillCls = rankInfo.rank === 1
+                    ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-200/80 dark:border-emerald-800'
+                    : 'bg-indigo-50/90 dark:bg-indigo-950/50 text-indigo-800 dark:text-indigo-300 border-indigo-200/80 dark:border-indigo-800/70';
+
                 let cardBorder = 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900';
                 if (m.delta > 0) cardBorder = 'border-emerald-300 dark:border-emerald-700 bg-emerald-50/60 dark:bg-emerald-950/35';
                 else if (m.delta < 0) cardBorder = 'border-rose-300 bg-rose-50/60';
@@ -1961,6 +2543,12 @@
                                 class="w-20 min-h-[38px] text-right font-extrabold text-navy-900 dark:text-sky-300 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-200 rounded-xl px-2 py-1 focus:outline-none">
                         </div>
                     </div>
+
+                    <!-- Lưu ý nhỏ hạng hiện tại & số cần thêm để lên hạng tiếp theo -->
+                    <button type="button" onclick="openCategoryPeerViewByStt(${item.stt})" class="w-full text-left px-2.5 py-1.5 rounded-xl border text-[11px] font-semibold flex items-center justify-between gap-2 hover:brightness-95 transition ${rankPillCls}">
+                        <span class="truncate">${rankNoteText}</span>
+                        <span class="text-[10px] opacity-75 shrink-0">So sánh ›</span>
+                    </button>
                 </div>`;
             }).join('');
         }
@@ -1977,6 +2565,9 @@
             tbody.innerHTML = enriched.map(({ item, m, isShiftDone }, idx) => {
                 const isChanged = m.delta !== 0;
                 const isJustUpdated = justUpdatedStts.has(item.stt);
+                const rankInfo = calcCategoryRankInfo(item);
+                const rankCompact = formatRankHintShort(rankInfo, item.unit, true);
+                const rankFullTip = formatRankHintShort(rankInfo, item.unit, false);
 
                 let rowClass = 'hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors';
                 let stickyBg = 'bg-white dark:bg-slate-900';
@@ -2032,7 +2623,11 @@
                     <td class="py-2.5 px-3 text-right">
                         <input type="number" inputmode="decimal" step="${item.unit === 'SL' ? '1' : '0.01'}" value="${item.curr}"
                             onchange="updateItemCurr(${item.stt}, this.value)"
-                            class="w-20 text-right font-extrabold text-navy-900 dark:text-sky-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-navy-800 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-200 rounded-lg px-2 py-1 focus:outline-none">
+                            class="w-24 text-right font-extrabold text-navy-900 dark:text-sky-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-navy-800 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-200 rounded-lg px-2 py-1 focus:outline-none">
+                        <button type="button" onclick="openCategoryPeerViewByStt(${item.stt})" title="${rankFullTip} (Bấm xem chi tiết)"
+                            class="block ml-auto mt-1 text-[10px] leading-tight font-semibold hover:underline ${rankInfo.rank === 1 ? 'text-emerald-600 dark:text-emerald-400' : 'text-indigo-600 dark:text-indigo-400'}">
+                            ${rankCompact}
+                        </button>
                     </td>
                     <td class="py-2.5 px-3 text-right">${deltaBadge}</td>
                     <td class="py-2.5 px-3 text-right font-medium text-slate-700 dark:text-slate-300">${formatNum(m.remaining, item.unit)}</td>
@@ -2170,15 +2765,27 @@
             if (incomingMonthPrefix) {
                 appState.monthPrefix = incomingMonthPrefix;
             }
-            const parsedDim = Number(parsedJson.tong_ngay_thang);
-            if (!isNaN(parsedDim) && parsedDim >= 28 && parsedDim <= 31) {
-                appState.daysInMonth = parsedDim;
-            } else if (incomingMonthPrefix) {
-                appState.daysInMonth = getDaysForMonthPrefix(incomingMonthPrefix);
+
+            // Luôn ưu tiên ngày hiện tại / số ngày thực của tháng hiện tại trừ khi người dùng chủ động chỉnh tay
+            const today = getTodayProgressDefaults();
+            if (!isManualDayOverride) {
+                appState.daysPassed = today.day;
+                appState.daysInMonth = today.daysInMonth;
             }
 
-            if (!isNaN(parsedDays) && parsedDays >= 1 && parsedDays <= 31) {
-                appState.daysPassed = parsedDays;
+            // Tiếp nhận bảng xếp hạng nhân viên thực tế từ Drive / JSON nếu có
+            if (Array.isArray(parsedJson.team_ranking) && parsedJson.team_ranking.length > 0) {
+                appState.teamRanking = {
+                    isSampleData: false,
+                    updatedAt: appState.lastSyncLabel,
+                    members: parsedJson.team_ranking.map(m => ({
+                        id: String(m.id || '').trim(),
+                        name: String(m.name || 'Nhân viên').trim(),
+                        revenue: Number(m.revenue || 0),
+                        target: Number(m.target || 0),
+                        categories: (m.categories && typeof m.categories === 'object') ? m.categories : {}
+                    }))
+                };
             }
 
             const parsedTarget = Number(parsedJson.tong_target);
@@ -2490,7 +3097,12 @@
         }
 
         function resetToDefault() {
+            const today = getTodayProgressDefaults();
             appState = JSON.parse(JSON.stringify(INITIAL_STATE));
+            appState.daysPassed = today.day;
+            appState.daysInMonth = today.daysInMonth;
+            appState.teamRanking = buildDefaultSampleTeam(appState.items, appState.currTotalRevenue, appState.totalTarget);
+            isManualDayOverride = false;
             justUpdatedStts.clear();
             saveState();
             setFilter('all');
@@ -2501,7 +3113,7 @@
         initPwaSupport();
         loadPrefs();
         renderTable();
-        if (autoSyncOnLoad && appsScriptUrl && appsScriptUrl.startsWith('http')) {
+        if (autoSyncOnLoad && !isPreviewSandboxEnv() && appsScriptUrl && appsScriptUrl.startsWith('http')) {
             setTimeout(() => syncFromGoogleDrive(true), 400);
         }
     </script>
