@@ -126,7 +126,7 @@
             <div class="min-w-0">
                 <div class="flex items-center gap-1.5 flex-wrap">
                     <span class="bg-gradient-to-r from-amber-300 to-amber-500 text-slate-950 text-[10px] sm:text-xs font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider">ĐMX 3797</span>
-                    <span id="badgeDate" class="bg-sky-500/20 border border-sky-400/30 text-sky-200 text-[11px] sm:text-xs font-medium px-2 py-0.5 rounded-full">Ngày 23/30 • Còn 7 ngày</span>
+                    <span id="badgeDate" class="bg-sky-500/20 border border-sky-400/30 text-sky-200 text-[11px] sm:text-xs font-medium px-2 py-0.5 rounded-full">Ngày 26/30 • Còn 4 ngày</span>
                     <span id="badgeLastSync" class="bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 text-[10px] sm:text-xs font-medium px-2 py-0.5 rounded-full hidden">Đổ số: --</span>
                 </div>
                 <h1 id="mainHeaderTitle" class="text-base sm:text-xl font-bold mt-1 tracking-tight truncate">Thi Đua 39 Ngành — Thuận (168806)</h1>
@@ -187,7 +187,7 @@
                 <span class="text-[10px] font-semibold mt-0.5">Lịch Sử (<span id="mobileHistoryBadge">2</span>)</span>
             </button>
             <button type="button" onclick="openFormExportModal()" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-95 transition">
-                <svg class="w-4 h-4 text-navy-800 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                <svg class="w-4 h-4 text-navy-800 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
                 <span class="text-[10px] font-semibold mt-0.5">Form Ca</span>
             </button>
             <button type="button" onclick="toggleTableFullscreen()" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-95 transition">
@@ -538,7 +538,7 @@
                         </button>
                     </div>
                     <textarea id="geminiPromptBox" rows="5" readonly class="w-full p-2.5 text-xs font-mono bg-white dark:bg-slate-950 border border-sky-200 dark:border-sky-800 rounded-lg text-slate-700 dark:text-slate-300 focus:outline-none">Cập nhật dữ liệu LŨY KẾ mới nhất từ file SK THI ĐUA LUỸ KẾ trên Drive cho Đoàn Phạm Quang Thuận (168806) và xuất duy nhất 1 khối JSON chuẩn (không giải thích thêm) gồm đủ tất cả ngành hàng trong tháng hiện tại theo mẫu:
-{"ngay_da_chay": 25, "tong_ngay_thang": 30, "tong_target": 1617.00, "doanh_thu_lk": 830.00, "categories": [{"name": "T11 - CE LG", "target": 113.00, "curr": 48.49, "unit": "Tr.đ"}, ... đủ tất cả ngành hàng]}</textarea>
+{"ngay_da_chay": 26, "tong_ngay_thang": 30, "tong_target": 1617.00, "doanh_thu_lk": 830.00, "categories": [{"name": "T11 - CE LG", "target": 113.00, "curr": 48.49, "unit": "Tr.đ"}, ... đủ tất cả ngành hàng]}</textarea>
                 </div>
 
                 <div>
@@ -546,7 +546,7 @@
                         <label class="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wide">Bước 2: Dán khối JSON vào đây</label>
                         <button type="button" onclick="fillSampleUpdate()" class="text-xs font-semibold text-navy-800 dark:text-sky-400 hover:underline py-1">Điền thử JSON ngày tiếp theo</button>
                     </div>
-                    <textarea id="pasteArea" rows="6" placeholder='{"ngay_da_chay": 25, "doanh_thu_lk": 830.00, "categories": [...]}'
+                    <textarea id="pasteArea" rows="6" placeholder='{"ngay_da_chay": 26, "doanh_thu_lk": 830.00, "categories": [...]}'
                         class="w-full p-3 font-mono bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white dark:focus:bg-slate-900"></textarea>
                 </div>
             </div>
@@ -696,7 +696,7 @@
                 <div class="p-3.5 rounded-xl bg-rose-50/60 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800/60 flex items-center justify-between gap-3">
                     <div>
                         <div class="font-bold text-rose-900 dark:text-rose-300">Khôi phục dữ liệu mặc định ban đầu</div>
-                        <div class="text-[11px] text-rose-700/80 dark:text-rose-400/80 mt-0.5">Đưa bảng số liệu về mốc chuẩn Ngày 23 ban đầu</div>
+                        <div class="text-[11px] text-rose-700/80 dark:text-rose-400/80 mt-0.5">Đưa bảng số liệu về mốc chuẩn ban đầu</div>
                     </div>
                     <button type="button" onclick="resetToDefault(); closeSettingsModal();" class="shrink-0 min-h-[38px] px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-xl transition">Khôi phục</button>
                 </div>
@@ -780,7 +780,7 @@
 
         // Dữ liệu gốc mặc định (tự động cập nhật linh động khi đồng bộ tháng mới)
         const INITIAL_STATE = {
-            daysPassed: 23,
+            daysPassed: 26,
             daysInMonth: 30,
             monthPrefix: 'T11',
             lastSyncLabel: '',
@@ -881,7 +881,6 @@
             const members = peers.map((p, pIdx) => {
                 const cats = {};
                 (items || INITIAL_STATE.items).forEach((it, idx) => {
-                    // Tạo biến thiên tự nhiên theo từng ngành để Thuận có ngành Top 1, Top 2-3 và ngành cần bám đuổi
                     const wave = (((idx * 7 + pIdx * 5) % 11) - 5) * 0.11;
                     const mult = Math.max(0.15, p.catSeed + wave);
                     const baseVal = it.curr > 0 ? it.curr : (it.target > 0 ? it.target * 0.18 : 0);
@@ -905,8 +904,35 @@
             };
         }
 
+        function cleanEmpDisplayName(rawName, empId) {
+            const idStr = String(empId || '').trim();
+            let s = String(rawName || '').trim();
+            if (!s) return idStr ? `NV ${idStr}` : 'Nhân viên';
+
+            if (idStr) {
+                s = s.replace(new RegExp(`\\b${idStr}\\b`, 'g'), '');
+            }
+            s = s
+                .replace(/^\d+[\.\-\)\s]+/, '')
+                .replace(/^[-–—:\s|/\\]+|[-–—:\s|/\\]+$/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+
+            const lettersOnly = s.replace(/[^a-zA-ZÀ-ỹ]/g, '');
+            const isFormulaErr = /^#(N\/A|REF!|VALUE!|DIV\/0!|NAME\?|ERROR!)/i.test(s);
+            if (isFormulaErr || lettersOnly.length < 2) {
+                return idStr ? `NV ${idStr}` : 'Nhân viên';
+            }
+
+            if (s === s.toUpperCase() && s.length > 3) {
+                s = s.toLowerCase().replace(/(^|\s)\S/g, ch => ch.toUpperCase());
+            }
+            return s;
+        }
+
         function shortEmpName(fullName) {
-            const parts = String(fullName || '').trim().split(/\s+/).filter(Boolean);
+            const cleaned = cleanEmpDisplayName(fullName, '');
+            const parts = cleaned.split(/\s+/).filter(Boolean);
             if (parts.length <= 2) return parts.join(' ');
             return parts.slice(-2).join(' ');
         }
@@ -931,7 +957,15 @@
 
             const others = appState.teamRanking.members
                 .filter(m => String(m.id || '').indexOf(MY_EMP_ID) === -1 && normalizeText(m.name) !== normalizeText(MY_EMP_NAME))
-                .map(m => ({ ...m, isMe: false }));
+                .map(m => {
+                    const safeId = String(m.id || '').trim();
+                    return {
+                        ...m,
+                        id: safeId,
+                        name: cleanEmpDisplayName(m.name, safeId),
+                        isMe: false
+                    };
+                });
 
             return [myRecord, ...others];
         }
@@ -989,7 +1023,6 @@
                 };
             }
 
-            // Người đứng sát ngay phía trên mình (có giá trị nhỏ nhất trong nhóm cao hơn mình)
             const nextPeer = strictlyHigher[strictlyHigher.length - 1];
             const rawDiff = Number((nextPeer.value - me.value).toFixed(2));
             const step = unit === 'SL' ? 1 : 0.01;
@@ -1247,7 +1280,6 @@
                 return;
             }
 
-            // Khung Preview (blob:) thường chặn kết nối ra ngoài Google Drive; tránh tự chạy ngầm gây lỗi console
             if (silent && isPreviewSandboxEnv()) {
                 return;
             }
@@ -1283,7 +1315,6 @@
                 const debugBox = document.getElementById('driveDebugBox');
                 if (debugBox) debugBox.value = lastDriveRawJson;
 
-                // Hiển thị tóm tắt nguồn sheet đọc được trong phần Cài đặt
                 const diagEl = document.getElementById('driveSyncDiagSummary');
                 if (diagEl) {
                     const src = parsedJson.debug_source_sheet || 'Không rõ';
@@ -1349,7 +1380,6 @@
                 if (saved) {
                     const parsed = JSON.parse(saved);
                     if (parsed && Array.isArray(parsed.items) && parsed.items.length > 0) {
-                        // Mặc định luôn khởi chạy theo ngày hiện tại / số ngày thực tế của tháng hiện tại
                         parsed.daysPassed = today.day;
                         parsed.daysInMonth = today.daysInMonth;
                         if (!parsed.monthPrefix) {
@@ -1543,7 +1573,6 @@
                 data: snapData
             };
 
-            // Nếu đồng bộ tự động nhiều lần trong cùng 1 ngày & cùng tháng, cập nhật đè vào bản ghi ngày đó để không làm rác lịch sử
             const filtered = isManual
                 ? historyLog
                 : historyLog.filter(h => !(h.daysPassed === appState.daysPassed && (h.monthPrefix || 'T11') === (appState.monthPrefix || 'T11')));
@@ -1700,7 +1729,7 @@
             if (!activeEntry) return;
 
             const eDaysInMonth = activeEntry.daysInMonth || 30;
-            const daysLeft = Math.max(0, eDaysInMonth - (activeEntry.daysPassed || 23));
+            const daysLeft = Math.max(0, eDaysInMonth - (activeEntry.daysPassed || 26));
             const projPct = activeEntry.totalTarget > 0
                 ? (((activeEntry.currTotalRevenue / Math.max(1, activeEntry.daysPassed)) * eDaysInMonth) / activeEntry.totalTarget) * 100
                 : 0;
@@ -1823,7 +1852,6 @@
             }
 
             if (!matchedEntry && Array.isArray(historyLog) && historyLog.length > 0) {
-                // Ưu tiên tìm ngày liền kề trước đó TRONG CÙNG THÁNG
                 const prevDayEntries = historyLog
                     .filter(h => (h.monthPrefix || 'T11') === curMonth && (h.daysPassed || 0) < appState.daysPassed)
                     .sort((a, b) => (b.daysPassed - a.daysPassed) || (b.timestamp - a.timestamp));
@@ -1845,7 +1873,6 @@
                 return { itemMap, totalRevenue, label, entry: matchedEntry };
             }
 
-            // Nếu không có mốc ngày liền kề trước (ví dụ mới đầu tháng hoặc mới đồng bộ cùng ngày), so trực tiếp với item.prev
             appState.items.forEach(it => {
                 itemMap[it.name] = typeof it.prev === 'number' ? it.prev : 0;
             });
@@ -1854,7 +1881,7 @@
 
         function calcItemMetrics(item, baselineObj) {
             const daysInMonth = Math.max(28, Math.min(31, Number(appState.daysInMonth) || 30));
-            const daysPassed = Math.max(1, Math.min(daysInMonth, Number(appState.daysPassed) || 23));
+            const daysPassed = Math.max(1, Math.min(daysInMonth, Number(appState.daysPassed) || 26));
             const daysLeft = Math.max(0, daysInMonth - daysPassed);
             const baseVal = (baselineObj && baselineObj.itemMap && baselineObj.itemMap[item.name] !== undefined)
                 ? baselineObj.itemMap[item.name]
@@ -2695,7 +2722,6 @@
                 });
                 if (found) return found;
 
-                // Tránh khớp nhầm nhóm ngắn (Sim vs Sim ĐMX, Điện tử vs Điện tử Samsung/TCL)
                 const exactOnly = ['sim', 'dien tu', 'bao hiem'];
                 if (normKey.length >= 6 && !exactOnly.includes(normKey)) {
                     found = list.find(it => {
@@ -2753,7 +2779,6 @@
             const oldDaysPassed = appState.daysPassed;
             const oldMonthPrefix = appState.monthPrefix || 'T11';
 
-            // Xác định tháng mới từ payload (nếu có)
             let incomingMonthPrefix = parsedJson.thang_prefix || '';
             if (!incomingMonthPrefix && Array.isArray(parsedJson.categories) && parsedJson.categories.length > 0) {
                 incomingMonthPrefix = extractMonthPrefix(parsedJson.categories[0].name);
@@ -2766,7 +2791,6 @@
                 appState.monthPrefix = incomingMonthPrefix;
             }
 
-            // Luôn ưu tiên ngày hiện tại / số ngày thực của tháng hiện tại trừ khi người dùng chủ động chỉnh tay
             const today = getTodayProgressDefaults();
             if (!isManualDayOverride) {
                 appState.daysPassed = today.day;
@@ -2775,17 +2799,29 @@
 
             // Tiếp nhận bảng xếp hạng nhân viên thực tế từ Drive / JSON nếu có
             if (Array.isArray(parsedJson.team_ranking) && parsedJson.team_ranking.length > 0) {
-                appState.teamRanking = {
-                    isSampleData: false,
-                    updatedAt: appState.lastSyncLabel,
-                    members: parsedJson.team_ranking.map(m => ({
-                        id: String(m.id || '').trim(),
-                        name: String(m.name || 'Nhân viên').trim(),
+                const seenPeerIds = new Set();
+                const cleanedMembers = [];
+                parsedJson.team_ranking.forEach(m => {
+                    const peerId = String(m.id || '').trim();
+                    const cleanName = cleanEmpDisplayName(m.name, peerId);
+                    const dedupKey = peerId || normalizeText(cleanName);
+                    if (!dedupKey || seenPeerIds.has(dedupKey)) return;
+                    seenPeerIds.add(dedupKey);
+                    cleanedMembers.push({
+                        id: peerId,
+                        name: cleanName,
                         revenue: Number(m.revenue || 0),
                         target: Number(m.target || 0),
                         categories: (m.categories && typeof m.categories === 'object') ? m.categories : {}
-                    }))
-                };
+                    });
+                });
+                if (cleanedMembers.length > 0) {
+                    appState.teamRanking = {
+                        isSampleData: false,
+                        updatedAt: appState.lastSyncLabel,
+                        members: cleanedMembers
+                    };
+                }
             }
 
             const parsedTarget = Number(parsedJson.tong_target);
@@ -2795,7 +2831,6 @@
 
             const parsedRev = Number(parsedJson.doanh_thu_lk);
             if (!isNaN(parsedRev) && parsedRev >= 0) {
-                // Nếu sang tháng mới chấp nhận mọi số >= 0; nếu cùng tháng chỉ chặn lỗi đọc nhầm cột quá thấp (< 50% lũy kế cũ)
                 const isReasonableSameMonth = isNewMonth || appState.currTotalRevenue <= 0 || parsedRev >= appState.currTotalRevenue * 0.5;
                 if (isReasonableSameMonth && parsedRev !== appState.currTotalRevenue) {
                     appState.prevTotalRevenue = isNewMonth ? 0 : appState.currTotalRevenue;
@@ -2815,7 +2850,6 @@
             const baselineBeforeUpdate = resolveCompareBaseline();
             justUpdatedStts.clear();
 
-            // CHẾ ĐỘ ĐỘNG TOÀN DIỆN: Khi Drive / JSON gửi kèm danh sách categories[]
             if (Array.isArray(parsedJson.categories) && parsedJson.categories.length > 0) {
                 const validCats = parsedJson.categories.filter(cat => {
                     const cn = String(cat.name || '').trim().toUpperCase();
@@ -2840,9 +2874,6 @@
                             if (fallbackVal > 0) newCurr = fallbackVal;
                         }
 
-                        // CHỐT CHẶN CHỐNG VỀ 0:
-                        // 1. Apps Script đánh dấu matched: false -> giữ nguyên số đang có
-                        // 2. Cùng tháng, ngành đang có lũy kế > 0 nhưng Drive trả về đúng 0 do lệch tab/khối -> giữ nguyên số cũ & gắn nhãn kiểm tra
                         let cleanCurr;
                         let unmatchedFlag = false;
                         const existingCurr = existingItem ? existingItem.curr : 0;
@@ -2949,7 +2980,6 @@
                 }
             }
 
-            // CHẾ ĐỘ TƯƠNG THÍCH NGƯỢC: Nếu JSON chỉ có object data{}
             const payloadMap = (typeof parsedJson.data === 'object' && !Array.isArray(parsedJson.data))
                 ? parsedJson.data
                 : parsedJson;
