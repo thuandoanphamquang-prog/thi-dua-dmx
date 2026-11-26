@@ -1,0 +1,2509 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <title>Theo Dõi Thi Đua — Đoàn Phạm Quang Thuận (168806)</title>
+    
+    <!-- PWA & Mobile App Meta Tags -->
+    <meta name="theme-color" content="#0d1b2e">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Thi Đua ĐMX">
+    <link id="appleTouchIcon" rel="apple-touch-icon" href="">
+    <link id="pwaManifestLink" rel="manifest" href="">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        navy: {
+                            800: '#1e3a5f',
+                            900: '#162b47',
+                            950: '#0d1b2e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        input, textarea, select {
+            font-size: 16px;
+        }
+        @media (min-width: 640px) {
+            input, textarea, select {
+                font-size: 13px;
+            }
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            50% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+        }
+        .row-changed {
+            background-color: #ecfdf5 !important;
+        }
+        .dark .row-changed {
+            background-color: rgba(6, 78, 59, 0.35) !important;
+        }
+        .row-just-updated {
+            animation: pulseGlow 1.5s ease-in-out 2;
+        }
+        .sticky-col-name {
+            position: sticky;
+            left: 0;
+            z-index: 8;
+        }
+        .table-scroll-container thead th {
+            position: sticky;
+            top: 0;
+            z-index: 12;
+        }
+        .table-scroll-container thead th.sticky-col-name {
+            z-index: 15;
+        }
+        .table-fullscreen-active {
+            position: fixed !important;
+            inset: 0 !important;
+            z-index: 48 !important;
+            border-radius: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            margin: 0 !important;
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .table-fullscreen-active .table-scroll-container,
+        .table-fullscreen-active #mobileCardsContainer {
+            flex: 1 1 auto !important;
+            max-height: none !important;
+            overflow-y: auto !important;
+        }
+        .pb-safe-dock {
+            padding-bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px));
+        }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 antialiased pb-safe-dock sm:pb-12 transition-colors duration-200">
+
+    <!-- Top Header -->
+    <header class="bg-gradient-to-r from-slate-950 via-navy-900 to-navy-800 text-white shadow-lg sticky top-0 z-30 border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-3.5 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-2">
+            <div class="min-w-0">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="bg-gradient-to-r from-amber-300 to-amber-500 text-slate-950 text-[10px] sm:text-xs font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider">ĐMX 3797</span>
+                    <span id="badgeDate" class="bg-sky-500/20 border border-sky-400/30 text-sky-200 text-[11px] sm:text-xs font-medium px-2 py-0.5 rounded-full">Ngày 23/30 • Còn 7 ngày</span>
+                    <span id="badgeLastSync" class="bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 text-[10px] sm:text-xs font-medium px-2 py-0.5 rounded-full hidden">Đổ số: --</span>
+                </div>
+                <h1 id="mainHeaderTitle" class="text-base sm:text-xl font-bold mt-1 tracking-tight truncate">Thi Đua 39 Ngành — Thuận (168806)</h1>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                <button type="button" id="syncDriveHeaderBtn" onclick="syncFromGoogleDrive()" class="hidden sm:inline-flex items-center gap-1.5 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 active:scale-95 text-slate-950 font-extrabold text-xs sm:text-sm px-3.5 py-2.5 rounded-xl shadow-md transition">
+                    <svg id="syncDriveHeaderIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    <span>Đồng Bộ Drive</span>
+                </button>
+                <button type="button" onclick="openPasteModal()" class="hidden sm:inline-flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-semibold text-xs sm:text-sm px-3.5 py-2.5 rounded-xl shadow-md transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                    Dán JSON
+                </button>
+                <button type="button" onclick="openHistoryModal()" class="hidden sm:inline-flex items-center gap-1.5 bg-sky-500/20 hover:bg-sky-500/30 active:scale-95 text-sky-100 font-semibold text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-sky-400/30 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Lịch Sử (<span id="historyCountBadge">2</span>)
+                </button>
+                <button type="button" onclick="openFormExportModal()" class="hidden sm:inline-flex items-center gap-1.5 bg-white/10 hover:bg-white/20 active:scale-95 text-white font-medium text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-white/15 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                    Form Ca
+                </button>
+
+                <!-- Install PWA Button -->
+                <button type="button" id="installPwaHeaderBtn" onclick="installNativePwa()" title="Cài App ra màn hình chính" class="hidden min-w-[40px] min-h-[40px] inline-flex items-center gap-1.5 px-2.5 py-2 bg-amber-400/20 hover:bg-amber-400/30 active:scale-95 text-amber-300 rounded-xl border border-amber-400/30 text-xs font-bold transition">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    <span class="hidden md:inline">Cài App</span>
+                </button>
+
+                <!-- Dark Mode Toggle -->
+                <button type="button" onclick="toggleDarkMode()" title="Đổi giao diện Sáng / Tối" class="min-w-[40px] min-h-[40px] inline-flex items-center justify-center p-2 bg-white/10 hover:bg-white/20 active:scale-95 text-amber-300 rounded-xl border border-white/15 transition">
+                    <svg id="themeIconSun" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                    <svg id="themeIconMoon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                </button>
+
+                <!-- Settings / Backup Modal Trigger -->
+                <button type="button" onclick="openSettingsModal()" title="Sao lưu & Tùy chỉnh" class="min-w-[40px] min-h-[40px] inline-flex items-center justify-center p-2 bg-white/10 hover:bg-white/20 active:scale-95 text-slate-200 rounded-xl border border-white/15 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Thumb-Zone Bottom Dock Bar -->
+    <nav class="sm:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-1.5 py-1.5 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+        <div class="grid grid-cols-5 gap-1">
+            <button type="button" onclick="syncFromGoogleDrive()" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 active:scale-95 transition">
+                <svg id="syncDriveMobileIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                <span class="text-[10px] font-extrabold mt-0.5">Đồng Bộ</span>
+            </button>
+            <button type="button" onclick="openPasteModal()" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl bg-emerald-600 text-white active:scale-95 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                <span class="text-[10px] font-bold mt-0.5">Dán JSON</span>
+            </button>
+            <button type="button" onclick="openHistoryModal()" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-95 transition">
+                <svg class="w-4 h-4 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span class="text-[10px] font-semibold mt-0.5">Lịch Sử (<span id="mobileHistoryBadge">2</span>)</span>
+            </button>
+            <button type="button" onclick="openFormExportModal()" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-95 transition">
+                <svg class="w-4 h-4 text-navy-800 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                <span class="text-[10px] font-semibold mt-0.5">Form Ca</span>
+            </button>
+            <button type="button" onclick="toggleTableFullscreen()" class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-95 transition">
+                <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                <span class="text-[10px] font-semibold mt-0.5">Toàn Màn</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-16 sm:top-auto sm:bottom-5 left-4 right-4 sm:left-auto sm:right-5 z-50 hidden transform transition-all duration-300 -translate-y-2 sm:translate-y-2 opacity-0">
+        <div class="bg-slate-900 dark:bg-slate-800 text-white px-4 py-3 rounded-2xl shadow-2xl border border-slate-700 flex items-center gap-2.5 text-xs sm:text-sm font-medium">
+            <span id="toastIcon" class="w-2.5 h-2.5 rounded-full bg-emerald-400 shrink-0"></span>
+            <span id="toastMsg">Đã cập nhật dữ liệu!</span>
+        </div>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-3.5 sm:px-6 mt-3.5 sm:mt-5 space-y-4">
+
+        <!-- KPI Overview Cards -->
+        <section class="grid grid-cols-2 lg:grid-cols-6 gap-2.5 sm:gap-3">
+            <!-- Control Card: Ngày chạy -->
+            <div class="col-span-2 lg:col-span-1 bg-white dark:bg-slate-900 rounded-2xl p-3 sm:p-3.5 shadow-xs border border-slate-200/80 dark:border-slate-800 flex items-center justify-between lg:flex-col lg:items-stretch lg:justify-between">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Tiến Độ Ngày</span>
+                        <span id="daysLeftPill" class="text-[11px] font-bold bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 px-2 py-0.5 rounded-md">Còn 7 ngày</span>
+                    </div>
+                    <div class="text-[11px] text-slate-400 mt-0.5 lg:hidden">Bấm số ngày để tính lại tốc độ</div>
+                </div>
+                <div class="flex items-center gap-1.5 lg:mt-2">
+                    <label for="daysPassedInput" class="hidden lg:inline text-xs text-slate-600 dark:text-slate-300 font-medium">Chạy:</label>
+                    <input id="daysPassedInput" type="number" inputmode="numeric" min="1" max="31" value="23" onchange="updateDaysPassed(this.value)"
+                        class="w-12 text-center font-extrabold text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl py-1.5 focus:outline-none focus:ring-2 focus:ring-navy-800">
+                    <span class="text-xs font-semibold text-slate-400">/</span>
+                    <input id="daysInMonthInput" type="number" inputmode="numeric" min="28" max="31" value="30" onchange="updateDaysInMonth(this.value)" title="Tổng số ngày trong tháng (28-31)"
+                        class="w-11 text-center font-bold text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 rounded-xl py-1.5 focus:outline-none focus:ring-2 focus:ring-navy-800">
+                </div>
+            </div>
+
+            <!-- KPI 1: Mục tiêu tổng -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-3 sm:p-3.5 shadow-xs border border-slate-200/80 dark:border-slate-800">
+                <div class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Mục Tiêu Tháng</div>
+                <div class="mt-1 flex items-baseline gap-1">
+                    <input id="totalTargetInput" type="number" inputmode="decimal" step="0.01" value="1617.00" onchange="updateTotalTarget(this.value)"
+                        class="w-24 sm:w-28 font-extrabold text-lg sm:text-xl text-slate-900 dark:text-white bg-transparent border-b border-dashed border-slate-300 dark:border-slate-700 focus:border-navy-800 focus:outline-none">
+                    <span class="text-xs font-semibold text-slate-500">tr</span>
+                </div>
+                <div id="kpiTargetSub" class="text-[11px] text-slate-400 mt-1">1.617 triệu đồng</div>
+            </div>
+
+            <!-- KPI 2: Lũy kế hiện tại -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-3 sm:p-3.5 shadow-xs border border-slate-200/80 dark:border-slate-800">
+                <div class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Lũy Kế Doanh Số</div>
+                <div class="mt-1 flex items-baseline gap-1">
+                    <input id="totalRevenueInput" type="number" inputmode="decimal" step="0.01" value="792.79" onchange="updateTotalRevenue(this.value)"
+                        class="w-24 sm:w-28 font-extrabold text-lg sm:text-xl text-navy-800 dark:text-sky-400 bg-transparent border-b border-dashed border-slate-300 dark:border-slate-700 focus:border-navy-800 focus:outline-none">
+                    <span class="text-xs font-semibold text-slate-500">tr</span>
+                </div>
+                <div id="kpiRevDelta" class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 mt-1 truncate">+21,07 tr vs Ngày 22/30</div>
+            </div>
+
+            <!-- KPI 3: Cần chạy mỗi ngày -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-3 sm:p-3.5 shadow-xs border border-slate-200/80 dark:border-slate-800">
+                <div class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Cần Chạy / Ngày</div>
+                <div class="mt-1 flex items-baseline gap-1">
+                    <span id="kpiDailyNeed" class="font-extrabold text-lg sm:text-xl text-rose-600 dark:text-rose-400">117,74</span>
+                    <span class="text-xs font-semibold text-slate-500">tr/ng</span>
+                </div>
+                <div id="kpiRemainingTotal" class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 truncate">Thiếu: 824,21 tr</div>
+            </div>
+
+            <!-- KPI 4: Tỷ lệ dự kiến tháng -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-3 sm:p-3.5 shadow-xs border border-slate-200/80 dark:border-slate-800">
+                <div class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Dự Kiến Đạt</div>
+                <div class="mt-1 flex items-baseline gap-1 flex-wrap">
+                    <span id="kpiProjectedPct" class="font-extrabold text-lg sm:text-xl text-amber-600 dark:text-amber-400">64,0%</span>
+                    <span id="kpiActualPct" class="text-[11px] font-medium text-slate-400">(49,0%)</span>
+                </div>
+                <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 mt-2 overflow-hidden">
+                    <div id="kpiProgressBar" class="bg-amber-500 h-1.5 rounded-full transition-all duration-500" style="width: 64.0%"></div>
+                </div>
+            </div>
+
+            <!-- KPI 5: Nhóm tăng số hôm nay -->
+            <div class="bg-emerald-50 dark:bg-emerald-950/50 rounded-2xl p-3 sm:p-3.5 shadow-xs border border-emerald-200 dark:border-emerald-800/70">
+                <div class="text-[11px] font-bold text-emerald-800 dark:text-emerald-300 uppercase">Nhảy Số Mới</div>
+                <div class="mt-1 flex items-baseline gap-1">
+                    <span id="kpiChangedCount" class="font-extrabold text-lg sm:text-xl text-emerald-700 dark:text-emerald-400">7</span>
+                    <span id="kpiTotalCategoriesLabel" class="text-xs font-semibold text-emerald-700 dark:text-emerald-400">/ 39 nhóm</span>
+                </div>
+                <div class="text-[11px] text-emerald-600 dark:text-emerald-400/80 mt-1 truncate">Đã tô xanh nổi bật</div>
+            </div>
+        </section>
+
+        <!-- Highlight Strip: Top Movers + Custom Comparison Reference Selector -->
+        <section id="moversBanner" class="bg-white dark:bg-slate-900 rounded-2xl p-3 sm:p-3.5 shadow-xs border border-slate-200/80 dark:border-slate-800">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <div class="flex items-center gap-2 flex-wrap">
+                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 text-xs font-bold">↑</span>
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200">Thay Đổi So Với:</h2>
+                    <select id="compareRefSelect" onchange="changeCompareReference(this.value)"
+                        class="min-h-[32px] text-xs font-bold bg-sky-50 dark:bg-sky-950/70 text-sky-900 dark:text-sky-300 border border-sky-200 dark:border-sky-800 rounded-lg px-2 py-0.5 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                        <option value="auto">Tự động (Ngày liền kề trước)</option>
+                    </select>
+                </div>
+                <span id="compareRefHint" class="text-[11px] text-slate-400">Đang đối chiếu với mốc gần nhất</span>
+            </div>
+            <div id="moversChips" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-0.5"></div>
+        </section>
+
+        <!-- Main Data Section (Card View / Table View / Zoom / Fullscreen) -->
+        <section id="tableSection" class="bg-white dark:bg-slate-900 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 overflow-hidden transition-all">
+            <!-- Toolbar -->
+            <div class="p-3 sm:p-3.5 bg-slate-50/90 dark:bg-slate-900/90 border-b border-slate-200 dark:border-slate-800 flex flex-col gap-2.5">
+                <!-- Row 1: Filter Tabs -->
+                <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5" id="filterTabs">
+                    <button type="button" onclick="setFilter('all')" data-filter="all" class="filter-btn active shrink-0 min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-semibold bg-navy-800 text-white transition">Tất cả (39)</button>
+                    <button type="button" onclick="setFilter('changed')" data-filter="changed" class="filter-btn shrink-0 min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 transition">Thay đổi (7)</button>
+                    <button type="button" onclick="setFilter('shift_pending')" data-filter="shift_pending" class="filter-btn shrink-0 min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200 transition">Chưa xong ca (39)</button>
+                    <button type="button" onclick="setFilter('safe')" data-filter="safe" class="filter-btn shrink-0 min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 transition">An toàn ≥100%</button>
+                    <button type="button" onclick="setFilter('near')" data-filter="near" class="filter-btn shrink-0 min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 transition">Gần đạt 50-99%</button>
+                    <button type="button" onclick="setFilter('hard')" data-filter="hard" class="filter-btn shrink-0 min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 transition">Khó đạt &lt;50%</button>
+                </div>
+
+                <!-- Row 2: Search + View Mode Switcher + Zoom + Fullscreen -->
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
+                    <div class="relative flex-1">
+                        <input id="searchInput" type="text" oninput="renderTable()" placeholder="Tìm ngành hàng, STT, hoặc combo (Android, LG, Sim, HC)..."
+                            class="w-full min-h-[40px] pl-9 pr-8 py-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy-800">
+                        <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <button type="button" onclick="clearSearch()" id="clearSearchBtn" class="hidden absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600 p-0.5">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center justify-between sm:justify-end gap-1.5 flex-wrap">
+                        <select id="sortSelect" onchange="renderTable()" class="min-h-[38px] text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-1.5 font-semibold text-slate-700 dark:text-slate-200 focus:outline-none">
+                            <option value="pct_desc">% Cao → Thấp</option>
+                            <option value="delta_desc">Tăng mạnh nhất</option>
+                            <option value="need_desc">Cần chạy/ng lớn</option>
+                            <option value="stt_asc">STT gốc</option>
+                        </select>
+
+                        <!-- View Switcher: Thẻ vs Bảng -->
+                        <div class="inline-flex items-center bg-slate-200/80 dark:bg-slate-800 rounded-xl p-0.5">
+                            <button type="button" id="btnViewCards" onclick="setViewMode('cards')" class="min-h-[34px] px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1" title="Giao diện thẻ gọn cho điện thoại">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                                <span>Thẻ</span>
+                            </button>
+                            <button type="button" id="btnViewTable" onclick="setViewMode('table')" class="min-h-[34px] px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1" title="Giao diện bảng đầy đủ cột">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                                <span>Bảng</span>
+                            </button>
+                        </div>
+
+                        <!-- Zoom Control -->
+                        <div class="inline-flex items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-0.5">
+                            <button type="button" onclick="changeTableZoom(-10)" class="min-h-[34px] px-2 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition">A-</button>
+                            <button type="button" onclick="resetTableZoom()" id="zoomLevelLabel" class="min-h-[34px] px-1.5 text-[11px] font-bold text-navy-800 dark:text-sky-400">100%</button>
+                            <button type="button" onclick="changeTableZoom(10)" class="min-h-[34px] px-2 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition">A+</button>
+                        </div>
+
+                        <!-- Fullscreen Button -->
+                        <button type="button" id="fullscreenBtn" onclick="toggleTableFullscreen()" class="min-h-[38px] inline-flex items-center gap-1.5 bg-navy-800 hover:bg-navy-900 active:scale-95 text-white text-xs font-semibold px-3 py-1.5 rounded-xl transition">
+                            <svg id="fullscreenIconExpand" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                            <svg id="fullscreenIconCompress" class="w-3.5 h-3.5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25"/></svg>
+                            <span id="fullscreenBtnText" class="hidden sm:inline">Toàn Màn Hình</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MOBILE-FIRST CARD LIST VIEW -->
+            <div id="mobileCardsContainer" class="p-3 grid grid-cols-1 md:grid-cols-2 gap-2.5 max-h-[72vh] overflow-y-auto" style="font-size: 13px;">
+                <!-- Cards rendered by JS -->
+            </div>
+
+            <!-- FULL DESKTOP/TABLE VIEW -->
+            <div id="tableScrollWrapper" class="table-scroll-container hidden overflow-x-auto max-h-[70vh]">
+                <table id="mainDataTable" class="w-full text-left border-collapse" style="font-size: 12px;">
+                    <thead>
+                        <tr class="bg-slate-900 text-white text-[0.92em] uppercase tracking-wider">
+                            <th class="py-3 px-2 text-center w-10">Ca</th>
+                            <th class="sticky-col-name bg-slate-900 py-3 px-3 min-w-[180px] sm:min-w-[220px] shadow-[2px_0_5px_rgba(0,0,0,0.15)]">Ngành Hàng Thi Đua</th>
+                            <th class="py-3 px-2 text-center w-14">ĐVT</th>
+                            <th class="py-3 px-3 text-right w-24">Mục Tiêu</th>
+                            <th id="thCompareCol" class="py-3 px-3 text-right w-24">Ngày 22/30</th>
+                            <th class="py-3 px-3 text-right w-28 bg-navy-800">Lũy Kế Mới ✎</th>
+                            <th class="py-3 px-3 text-right w-28">Thay Đổi</th>
+                            <th class="py-3 px-3 text-right w-24">Còn Thiếu</th>
+                            <th class="py-3 px-3 text-right w-28">Cần / Ngày</th>
+                            <th class="py-3 px-3 text-center w-24">% Dự Kiến</th>
+                            <th class="py-3 px-3 min-w-[200px]">Ghi Chú & Combo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="divide-y divide-slate-100 dark:divide-slate-800">
+                        <!-- Rows rendered by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Strategic Category Grouping (4 Tiers) -->
+        <section class="bg-white dark:bg-slate-900 rounded-2xl p-3.5 sm:p-4 shadow-xs border border-slate-200/80 dark:border-slate-800">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-3">
+                <h3 id="strategicGroupTitle" class="text-sm font-bold text-slate-800 dark:text-slate-100">Phân Nhóm Chiến Thuật Chạy Số 39 Ngành Hàng</h3>
+                <span class="text-xs text-slate-500 dark:text-slate-400">Tự động phân bổ theo % dự kiến & mức cần chạy/ngày</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 text-xs">
+                <!-- Nhóm 1 -->
+                <div class="p-3.5 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60 flex flex-col">
+                    <div class="flex items-center justify-between gap-2 pb-2 border-b border-emerald-200/70 dark:border-emerald-800/60">
+                        <span class="font-bold text-emerald-900 dark:text-emerald-300">1. Đã Đạt (Không Cần Chạy)</span>
+                        <span id="tierDoneCount" class="px-2 py-0.5 rounded-full bg-emerald-600 text-white font-bold text-[11px]">0</span>
+                    </div>
+                    <p class="text-[11px] text-emerald-700 dark:text-emerald-400/80 mt-1.5 mb-2">Dự kiến ≥ 100% — Đã vượt nhịp, nhường nguồn lực cho nhóm thiếu.</p>
+                    <div id="tierDoneList" class="flex flex-wrap gap-1.5 mt-auto"></div>
+                </div>
+
+                <!-- Nhóm 2 -->
+                <div class="p-3.5 rounded-xl bg-sky-50/70 dark:bg-sky-950/30 border border-sky-200 dark:border-sky-800/60 flex flex-col">
+                    <div class="flex items-center justify-between gap-2 pb-2 border-b border-sky-200/70 dark:border-sky-800/60">
+                        <span class="font-bold text-sky-900 dark:text-sky-300">2. Gần Đạt (Tập Trung Chạy)</span>
+                        <span id="tierNearCount" class="px-2 py-0.5 rounded-full bg-sky-600 text-white font-bold text-[11px]">0</span>
+                    </div>
+                    <p class="text-[11px] text-sky-700 dark:text-sky-400/80 mt-1.5 mb-2">Dự kiến 70% – 99% — Chỉ cần đẩy nhẹ mỗi ngày là chốt sổ 100%.</p>
+                    <div id="tierNearList" class="flex flex-wrap gap-1.5 mt-auto"></div>
+                </div>
+
+                <!-- Nhóm 3 -->
+                <div class="p-3.5 rounded-xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 flex flex-col">
+                    <div class="flex items-center justify-between gap-2 pb-2 border-b border-amber-200/70 dark:border-amber-800/60">
+                        <span class="font-bold text-amber-950 dark:text-amber-300">3. Có Thể Đạt Nếu Cố Gắng</span>
+                        <span id="tierPushCount" class="px-2 py-0.5 rounded-full bg-amber-500 text-white font-bold text-[11px]">0</span>
+                    </div>
+                    <p class="text-[11px] text-amber-800 dark:text-amber-400/80 mt-1.5 mb-2">Dự kiến 40% – 69% — Tận dụng combo bán kèm để bứt tốc về đích.</p>
+                    <div id="tierPushList" class="flex flex-wrap gap-1.5 mt-auto"></div>
+                </div>
+
+                <!-- Nhóm 4 -->
+                <div class="p-3.5 rounded-xl bg-rose-50/70 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800/60 flex flex-col">
+                    <div class="flex items-center justify-between gap-2 pb-2 border-b border-rose-200/70 dark:border-rose-800/60">
+                        <span class="font-bold text-rose-950 dark:text-rose-300">4. Các Môn Khó Chạy</span>
+                        <span id="tierHardCount" class="px-2 py-0.5 rounded-full bg-rose-600 text-white font-bold text-[11px]">0</span>
+                    </div>
+                    <p class="text-[11px] text-rose-700 dark:text-rose-400/80 mt-1.5 mb-2">Dự kiến &lt; 40% — Dung lượng lớn hoặc đang 0%, ưu tiên phá băng & ghép hồ sơ.</p>
+                    <div id="tierHardList" class="flex flex-wrap gap-1.5 mt-auto"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL 1: Cập Nhật Dữ Liệu JSON -->
+    <div id="pasteModal" class="fixed inset-0 z-50 hidden bg-slate-900/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-2xl max-w-2xl w-full shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col max-h-[92vh]">
+            <div class="px-5 py-4 bg-slate-900 text-white flex items-center justify-between">
+                <div>
+                    <h3 class="font-bold text-base">Cập Nhật Số Mới Bằng JSON</h3>
+                    <p class="text-xs text-slate-300 mt-0.5">Tự động cập nhật tên ngành hàng & Target mới nhất theo tháng</p>
+                </div>
+                <button type="button" onclick="closePasteModal()" class="text-slate-400 hover:text-white p-1.5">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="p-4 sm:p-5 overflow-y-auto space-y-4">
+                <div class="bg-sky-50/80 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-800 rounded-xl p-3.5 space-y-2">
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="text-xs font-bold text-sky-900 dark:text-sky-300 uppercase tracking-wide">Bước 1: Copy lệnh gửi Gemini</span>
+                        <button type="button" onclick="copyGeminiPrompt()" class="min-h-[36px] inline-flex items-center gap-1.5 bg-sky-600 hover:bg-sky-700 active:scale-95 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-xs transition">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            Copy Lệnh
+                        </button>
+                    </div>
+                    <textarea id="geminiPromptBox" rows="5" readonly class="w-full p-2.5 text-xs font-mono bg-white dark:bg-slate-950 border border-sky-200 dark:border-sky-800 rounded-lg text-slate-700 dark:text-slate-300 focus:outline-none">Cập nhật dữ liệu LŨY KẾ mới nhất từ file SK THI ĐUA LUỸ KẾ trên Drive cho Đoàn Phạm Quang Thuận (168806) và xuất duy nhất 1 khối JSON chuẩn (không giải thích thêm) gồm đủ tất cả ngành hàng trong tháng hiện tại theo mẫu:
+{"ngay_da_chay": 25, "tong_ngay_thang": 30, "tong_target": 1617.00, "doanh_thu_lk": 830.00, "categories": [{"name": "T11 - CE LG", "target": 113.00, "curr": 48.49, "unit": "Tr.đ"}, ... đủ tất cả ngành hàng]}</textarea>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label class="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wide">Bước 2: Dán khối JSON vào đây</label>
+                        <button type="button" onclick="fillSampleUpdate()" class="text-xs font-semibold text-navy-800 dark:text-sky-400 hover:underline py-1">Điền thử JSON ngày tiếp theo</button>
+                    </div>
+                    <textarea id="pasteArea" rows="6" placeholder='{"ngay_da_chay": 25, "doanh_thu_lk": 830.00, "categories": [...]}'
+                        class="w-full p-3 font-mono bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white dark:focus:bg-slate-900"></textarea>
+                </div>
+            </div>
+
+            <div class="px-5 py-3.5 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-2">
+                <button type="button" onclick="closePasteModal()" class="min-h-[42px] px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl transition">Hủy</button>
+                <button type="button" onclick="processPastedData()" class="min-h-[42px] px-4 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-sm transition">Cập Nhật JSON & Lưu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Xuất Form Ca Làm Việc -->
+    <div id="exportModal" class="fixed inset-0 z-50 hidden bg-slate-900/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="px-5 py-4 bg-navy-900 text-white flex items-center justify-between">
+                <div>
+                    <h3 class="font-bold text-base">Form Target Ca 12456 (% Cao → Thấp)</h3>
+                    <p class="text-xs text-slate-300 mt-0.5">Tự động tính lại theo số ngày còn lại</p>
+                </div>
+                <button type="button" onclick="closeExportModal()" class="text-slate-400 hover:text-white p-1.5">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="p-4 overflow-y-auto">
+                <textarea id="exportTextArea" rows="15" readonly class="w-full p-3 text-xs font-mono bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none text-slate-800 dark:text-slate-200"></textarea>
+            </div>
+            <div class="px-5 py-3.5 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <span class="text-xs text-slate-500">Sẵn sàng gửi nhóm Zalo ca</span>
+                <div class="flex gap-2">
+                    <button type="button" onclick="closeExportModal()" class="min-h-[42px] px-3.5 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl transition">Đóng</button>
+                    <button type="button" onclick="copyExportForm()" class="min-h-[42px] px-4 py-2 text-xs font-semibold bg-navy-800 hover:bg-navy-900 text-white rounded-xl shadow-sm transition">Copy Form</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: Lịch Sử Lưu Trữ 45 Ngày -->
+    <div id="historyModal" class="fixed inset-0 z-50 hidden bg-slate-900/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-2xl max-w-4xl w-full shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col max-h-[92vh]">
+            <div class="px-5 py-4 bg-slate-900 text-white flex items-center justify-between">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h3 class="font-bold text-base">Lịch Sử Cập Nhật (Lưu 45 Ngày)</h3>
+                        <span class="bg-sky-500/20 text-sky-200 border border-sky-400/30 text-[11px] font-semibold px-2 py-0.5 rounded-full">Tự dọn &gt; 45N</span>
+                    </div>
+                    <p class="text-xs text-slate-300 mt-0.5">Xem lại biến động từng ngày hoặc khôi phục mốc cũ</p>
+                </div>
+                <button type="button" onclick="closeHistoryModal()" class="text-slate-400 hover:text-white p-1.5">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="p-4 sm:p-5 overflow-y-auto grid grid-cols-1 md:grid-cols-12 gap-4 flex-1">
+                <div class="md:col-span-5 space-y-2 border-b md:border-b-0 md:border-r border-slate-200 dark:border-slate-800 pb-3 md:pb-0 md:pr-4">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xs font-bold uppercase text-slate-500">Các mốc (<span id="historyModalTotal">0</span>)</span>
+                        <button type="button" onclick="saveManualSnapshot()" class="min-h-[34px] px-2.5 text-xs font-semibold bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 rounded-lg">+ Lưu mốc hiện tại</button>
+                    </div>
+                    <div id="historyListContainer" class="space-y-2 max-h-[32vh] md:max-h-[55vh] overflow-y-auto pr-1"></div>
+                </div>
+
+                <div class="md:col-span-7 flex flex-col justify-between">
+                    <div id="historyDetailContainer" class="space-y-3"></div>
+                </div>
+            </div>
+
+            <div class="px-5 py-3 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <span class="text-[11px] text-slate-500">Tự động lưu trữ 45 ngày gần nhất.</span>
+                <button type="button" onclick="closeHistoryModal()" class="min-h-[40px] px-4 py-2 text-xs font-semibold bg-slate-800 hover:bg-slate-900 text-white rounded-xl transition">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 4: Cài Đặt & Sao Lưu Dữ Liệu -->
+    <div id="settingsModal" class="fixed inset-0 z-50 hidden bg-slate-900/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="px-5 py-4 bg-gradient-to-r from-slate-900 to-navy-900 text-white flex items-center justify-between">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-amber-400 text-sm">◆</span>
+                        <h3 class="font-bold text-base">Tùy Chỉnh & Sao Lưu Dữ Liệu</h3>
+                    </div>
+                    <p class="text-xs text-slate-300 mt-0.5">Đồng bộ dữ liệu đa thiết bị & thiết lập ca làm việc</p>
+                </div>
+                <button type="button" onclick="closeSettingsModal()" class="text-slate-400 hover:text-white p-1.5">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="p-4 sm:p-5 overflow-y-auto space-y-4 text-xs">
+                <!-- Google Apps Script Sync URL Config -->
+                <div class="p-3.5 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50/60 dark:from-amber-950/40 dark:to-slate-900 border border-amber-300 dark:border-amber-700/70 space-y-2.5">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="font-bold text-amber-950 dark:text-amber-300 flex items-center gap-1.5">
+                            <span>⚡</span>
+                            <span>Link Đồng Bộ Google Drive (Apps Script)</span>
+                        </div>
+                        <span id="scriptUrlStatusBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300">Đã kết nối</span>
+                    </div>
+                    <p class="text-[11px] text-slate-600 dark:text-slate-400">Dán đường link Web App (<code class="font-mono text-amber-800 dark:text-amber-300">https://script.google.com/macros/s/.../exec</code>) vào ô dưới để tự động kéo ngành hàng & target mới nhất.</p>
+                    <input id="appsScriptUrlInput" type="url" value="https://script.google.com/macros/s/AKfycbwvQ77k6Y8kaKG86GyQD2_vxQSwsHHAM6lhZzpkWHO6_vBCvexkzo89mIHIw9D9x6px/exec" placeholder="https://script.google.com/macros/s/.../exec"
+                        class="w-full p-2.5 font-mono text-[11px] bg-white dark:bg-slate-950 border border-amber-300 dark:border-amber-700 rounded-xl text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <div class="flex gap-2">
+                        <button type="button" onclick="saveAppsScriptUrl()" class="flex-1 min-h-[38px] px-3 py-1.5 bg-navy-800 hover:bg-navy-900 text-white font-bold rounded-xl transition">Lưu Link</button>
+                        <button type="button" onclick="saveAppsScriptUrl(); syncFromGoogleDrive();" class="flex-1 min-h-[38px] px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold rounded-xl transition">Lưu & Đồng Bộ Ngay</button>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-amber-200/70 dark:border-amber-800/60">
+                        <label class="flex items-center gap-2 cursor-pointer select-none text-[11px] font-semibold text-amber-950 dark:text-amber-200">
+                            <input id="autoSyncToggle" type="checkbox" checked onchange="toggleAutoSync(this.checked)" class="w-4 h-4 rounded accent-amber-500">
+                            <span>Tự động đồng bộ khi mở app</span>
+                        </label>
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="copyDriveDebugJson()" class="text-[11px] font-bold text-emerald-700 dark:text-emerald-400 hover:underline">Copy Chẩn Đoán</button>
+                            <button type="button" onclick="toggleDriveDebugBox()" class="text-[11px] font-bold text-navy-800 dark:text-sky-400 hover:underline">Xem JSON Drive</button>
+                        </div>
+                    </div>
+                    <div id="driveSyncDiagSummary" class="hidden p-2 rounded-lg bg-white/80 dark:bg-slate-950/80 border border-amber-200 dark:border-amber-800 text-[11px] text-slate-700 dark:text-slate-300"></div>
+                    <textarea id="driveDebugBox" rows="6" readonly placeholder="Bấm 'Đồng Bộ Drive' để xem dữ liệu JSON thô trả về từ Google Apps Script..." class="hidden w-full p-2 font-mono text-[10px] bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-300 focus:outline-none"></textarea>
+                </div>
+
+                <div id="installPwaCard" class="hidden p-3.5 rounded-xl bg-sky-50/80 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-800 flex items-center justify-between gap-3">
+                    <div>
+                        <div class="font-bold text-sky-950 dark:text-sky-200">Cài đặt ứng dụng ra màn hình chính</div>
+                        <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Mở toàn màn hình như ứng dụng độc lập</div>
+                    </div>
+                    <button type="button" onclick="installNativePwa()" class="shrink-0 min-h-[38px] px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl transition">Cài Ngay</button>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 flex items-center justify-between gap-3">
+                    <div>
+                        <div class="font-bold text-slate-900 dark:text-white">Xóa dấu tick hoàn thành ca hôm nay</div>
+                        <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Đặt lại toàn bộ ô đánh dấu đã chạy xong trong ca</div>
+                    </div>
+                    <button type="button" onclick="resetShiftChecks()" class="shrink-0 min-h-[38px] px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-xl transition">Đặt lại ca</button>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-2.5">
+                    <div class="font-bold text-slate-900 dark:text-white">Sao lưu / Chuyển dữ liệu sang thiết bị khác</div>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400">Copy chuỗi sao lưu bên dưới để lưu trữ hoặc dán vào điện thoại/máy tính khác.</p>
+                    <div class="flex gap-2">
+                        <button type="button" onclick="exportFullBackup()" class="flex-1 min-h-[40px] px-3 py-2 bg-navy-800 hover:bg-navy-900 text-white font-semibold rounded-xl transition">Copy Mã Sao Lưu</button>
+                        <button type="button" onclick="importFullBackup()" class="flex-1 min-h-[40px] px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition">Khôi Phục Từ Mã</button>
+                    </div>
+                    <textarea id="backupArea" rows="3" placeholder="Dán mã sao lưu vào đây nếu muốn khôi phục từ máy khác..." class="w-full p-2.5 font-mono text-[11px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none"></textarea>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-rose-50/60 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800/60 flex items-center justify-between gap-3">
+                    <div>
+                        <div class="font-bold text-rose-900 dark:text-rose-300">Khôi phục dữ liệu mặc định ban đầu</div>
+                        <div class="text-[11px] text-rose-700/80 dark:text-rose-400/80 mt-0.5">Đưa bảng số liệu về mốc chuẩn Ngày 23 ban đầu</div>
+                    </div>
+                    <button type="button" onclick="resetToDefault(); closeSettingsModal();" class="shrink-0 min-h-[38px] px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-xl transition">Khôi phục</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- KHỞI TẠO CHUẨN PWA (ICON + MANIFEST + INSTALL PROMPT) ---
+        let deferredInstallPrompt = null;
+
+        function initPwaSupport() {
+            try {
+                const svgIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <defs>
+                        <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#0d1b2e"/>
+                            <stop offset="100%" stop-color="#1e3a5f"/>
+                        </linearGradient>
+                        <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#fcd34d"/>
+                            <stop offset="100%" stop-color="#f59e0b"/>
+                        </linearGradient>
+                    </defs>
+                    <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+                    <rect x="36" y="36" width="440" height="440" rx="88" fill="none" stroke="url(#gold)" stroke-width="10" stroke-opacity="0.35"/>
+                    <text x="256" y="215" font-family="Arial, sans-serif" font-weight="900" font-size="112" fill="url(#gold)" text-anchor="middle">ĐMX</text>
+                    <text x="256" y="315" font-family="Arial, sans-serif" font-weight="800" font-size="64" fill="#ffffff" text-anchor="middle">3797</text>
+                    <rect x="126" y="355" width="260" height="44" rx="22" fill="#10b981"/>
+                    <text x="256" y="385" font-family="Arial, sans-serif" font-weight="700" font-size="26" fill="#ffffff" text-anchor="middle">THI ĐUA CÁ NHÂN</text>
+                </svg>`;
+                const iconUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgIcon);
+
+                const appleIcon = document.getElementById('appleTouchIcon');
+                if (appleIcon) appleIcon.href = iconUrl;
+
+                const manifestObj = {
+                    name: "Thi Đua Ngành Hàng — ĐMX 3797",
+                    short_name: "Thi Đua ĐMX",
+                    description: "Theo dõi tiến độ thi đua ngành hàng cá nhân - Đoàn Phạm Quang Thuận (168806)",
+                    start_url: window.location.href,
+                    display: "standalone",
+                    background_color: "#0d1b2e",
+                    theme_color: "#0d1b2e",
+                    orientation: "portrait-primary",
+                    icons: [
+                        { src: iconUrl, sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
+                        { src: iconUrl, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
+                    ]
+                };
+
+                const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
+                const manifestUrl = URL.createObjectURL(manifestBlob);
+                const manifestLink = document.getElementById('pwaManifestLink');
+                if (manifestLink) manifestLink.href = manifestUrl;
+            } catch (e) {}
+        }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredInstallPrompt = e;
+            const headerBtn = document.getElementById('installPwaHeaderBtn');
+            const modalCard = document.getElementById('installPwaCard');
+            if (headerBtn) headerBtn.classList.remove('hidden');
+            if (modalCard) modalCard.classList.remove('hidden');
+        });
+
+        async function installNativePwa() {
+            if (!deferredInstallPrompt) return;
+            deferredInstallPrompt.prompt();
+            const choice = await deferredInstallPrompt.userChoice;
+            if (choice && choice.outcome === 'accepted') {
+                showToast("Đang cài ứng dụng ra màn hình chính!");
+                const headerBtn = document.getElementById('installPwaHeaderBtn');
+                const modalCard = document.getElementById('installPwaCard');
+                if (headerBtn) headerBtn.classList.add('hidden');
+                if (modalCard) modalCard.classList.add('hidden');
+            }
+            deferredInstallPrompt = null;
+        }
+
+        // Dữ liệu gốc mặc định (tự động cập nhật linh động khi đồng bộ tháng mới)
+        const INITIAL_STATE = {
+            daysPassed: 23,
+            daysInMonth: 30,
+            monthPrefix: 'T11',
+            lastSyncLabel: '',
+            totalTarget: 1617.00,
+            prevTotalRevenue: 771.72,
+            currTotalRevenue: 792.79,
+            shiftCheckedNames: [],
+            items: [
+                { stt: 1, name: "T11 - Máy sấy / Máy rửa chén", short: "MS / MRC", unit: "Tr.đ", target: 15.00, prev: 6.47, curr: 6.47, note: "Giữ nhịp đều", aliases: ["máy sấy", "máy rửa chén", "máy sấy / máy rửa chén", "ms", "mrc"] },
+                { stt: 2, name: "T11 - CE LG", short: "LG", unit: "Tr.đ", target: 113.00, prev: 48.49, curr: 48.49, note: "Đẩy thêm đơn tivi/máy giặt LG", aliases: ["ce lg", "lg"] },
+                { stt: 3, name: "T11 - Trả chậm FECREDIT, SAMSUNG F+ , SHINHAN, MCREDIT", short: "Fe / SS F+ / Shinhan", unit: "Tr.đ", target: 200.51, prev: 152.27, curr: 152.27, note: "99% - nhường hồ sơ cho HC", aliases: ["fecredit", "fe", "samsung f+", "shinhan", "mcredit", "trả chậm fe", "trả chậm fecredit, samsung f+ , shinhan, mcredit", "trả chậm fe, ss f+, shinhan, mcredit"] },
+                { stt: 4, name: "T11 - Quạt gió", short: "Quạt", unit: "Tr.đ", target: 6.19, prev: 4.98, curr: 5.79, note: "Đã vượt nhịp (+0.81 tr)", aliases: ["quạt gió", "quạt"] },
+                { stt: 5, name: "T11 - Trả chậm Homecredit", short: "HC", unit: "Tr.đ", target: 358.26, prev: 51.85, curr: 51.85, note: "Trọng tâm trả chậm HC", aliases: ["homecredit", "hc", "trả chậm hc", "trả chậm homecredit"] },
+                { stt: 6, name: "T11 - Tai nghe", short: "Tai nghe", unit: "Tr.đ", target: 4.91, prev: 0.55, curr: 0.55, note: "Bán kèm ĐT/Laptop", aliases: ["tai nghe"] },
+                { stt: 7, name: "T11 - Sạc dự phòng", short: "SDP", unit: "Tr.đ", target: 5.24, prev: 2.40, curr: 2.40, note: "Bán kèm ĐT", aliases: ["sạc dự phòng", "sdp"] },
+                { stt: 8, name: "T11 - Tủ Lạnh / Đông / Mát", short: "Tủ lạnh", unit: "Tr.đ", target: 93.87, prev: 4.93, curr: 11.59, note: "Tăng +6.66 tr ngày 23", aliases: ["tủ lạnh", "tủ đông", "tủ mát", "tủ lạnh / đông / mát", "tủ lạnh, tủ đông, tủ mát"] },
+                { stt: 9, name: "T11 - Laptop", short: "Laptop", unit: "Tr.đ", target: 56.90, prev: 45.72, curr: 45.72, note: "Đã 105% - duy trì nhẹ", aliases: ["laptop"] },
+                { stt: 10, name: "T11 - Cáp sạc", short: "Cáp sạc", unit: "Tr.đ", target: 3.11, prev: 1.78, curr: 1.78, note: "Bán kèm ĐT/PK", aliases: ["cáp sạc"] },
+                { stt: 11, name: "T11 - ĐIỆN THOẠI & TABLET ANDROID", short: "Android", unit: "Tr.đ", target: 254.30, prev: 121.14, curr: 121.14, note: "Combo Android: nhận thêm từ Vivo & Realme", aliases: ["điện thoại & tablet android", "android"] },
+                { stt: 12, name: "T11 - Nồi cơm & Nồi chiên", short: "Nồi cơm, chiên", unit: "Tr.đ", target: 32.53, prev: 12.18, curr: 11.46, note: "Ghép đơn gia dụng", aliases: ["nồi cơm", "nồi chiên", "nồi cơm & nồi chiên", "nồi cơm, nồi chiên"] },
+                { stt: 13, name: "T11 - Máy giặt", short: "MG", unit: "Tr.đ", target: 110.59, prev: 34.82, curr: 34.82, note: "Đẩy thêm đơn máy giặt", aliases: ["máy giặt", "mg"] },
+                { stt: 14, name: "T11 - Máy lọc KK - Hút bụi - Hút ẩm", short: "Hút bụi / Lọc KK", unit: "Tr.đ", target: 24.57, prev: 11.83, curr: 11.83, note: "Đẩy thêm hút bụi/lọc khí", aliases: ["máy lọc kk", "hút bụi", "hút ẩm", "máy lọc kk - hút bụi - hút ẩm", "máy lọc không khí"] },
+                { stt: 15, name: "T11 - Phụ kiện khác IT & Nhóm khác", short: "PK khác IT", unit: "Tr.đ", target: 34.36, prev: 22.34, curr: 23.87, note: "Sắp về đích (+1.53 tr)", aliases: ["phụ kiện khác it", "pk khác", "phụ kiện khác it & nhóm khác"] },
+                { stt: 16, name: "T11 - Trả Chậm Điện máy & Gia dụng", short: "Trả chậm ĐM & GD", unit: "Tr.đ", target: 374.23, prev: 70.12, curr: 76.27, note: "Tăng +6.15 tr ngày 23", aliases: ["trả chậm điện máy", "trả chậm đm", "trả chậm điện máy & gia dụng"] },
+                { stt: 17, name: "T11 - Đồng hồ & Smartwatch", short: "ĐHTT/wear", unit: "Tr.đ", target: 10.09, prev: 3.13, curr: 3.13, note: "Bán kèm ĐT", aliases: ["đồng hồ", "smartwatch", "đhtt", "wear", "đồng hồ & smartwatch"] },
+                { stt: 18, name: "T11 - Máy lọc nước", short: "Máy lọc nước", unit: "Tr.đ", target: 48.27, prev: 14.84, curr: 14.84, note: "Ghép đơn gia đình", aliases: ["máy lọc nước"] },
+                { stt: 19, name: "T11 - Điện thoại Vivo", short: "Vivo", unit: "Tr.đ", target: 37.31, prev: 9.15, curr: 9.15, note: "Combo Android: cộng thẳng vào Android", aliases: ["vivo", "điện thoại vivo"] },
+                { stt: 20, name: "T11 - Camera", short: "Camera", unit: "Tr.đ", target: 7.20, prev: 2.96, curr: 2.96, note: "Ghép đơn gia đình", aliases: ["camera"] },
+                { stt: 21, name: "T11 - Điện tử", short: "Điện tử (tổng)", unit: "Tr.đ", target: 144.97, prev: 0.32, curr: 0.32, note: "Combo Điện tử: nhận thêm từ SS & TCL", aliases: ["điện tử", "tivi"] },
+                { stt: 22, name: "T11 - Vay tiền mặt", short: "Vay tiền mặt", unit: "Tr.đ", target: 67.73, prev: 42.80, curr: 42.80, note: "82% - bám sát về đích", aliases: ["vay tiền mặt", "vay"] },
+                { stt: 23, name: "T11 - Điện tử Samsung", short: "Tivi Samsung", unit: "Tr.đ", target: 50.68, prev: 0.00, curr: 0.00, note: "Combo Điện tử: cộng thẳng vào Điện tử", aliases: ["điện tử samsung", "tivi samsung"] },
+                { stt: 24, name: "T11 - Bảo hiểm Thợ ĐMX", short: "BH ĐMX", unit: "Tr.đ", target: 161.57, prev: 17.04, curr: 17.04, note: "Trọng tâm bảo hiểm ĐMX", aliases: ["bảo hiểm thợ đmx", "bh đmx", "bh ce"] },
+                { stt: 25, name: "T11 - Ví trả sau", short: "Ví trả sau", unit: "Tr.đ", target: 37.29, prev: 26.38, curr: 26.38, note: "Bám sát mốc 100% (92%)", aliases: ["ví trả sau"] },
+                { stt: 26, name: "T11 - Bảo hiểm Thợ ICT", short: "BH ICT", unit: "Tr.đ", target: 109.16, prev: 36.35, curr: 36.35, note: "Ghép đơn ĐT/Laptop", aliases: ["bảo hiểm thợ ict", "bh ict"] },
+                { stt: 27, name: "T11 - Loa Phụ Kiện", short: "Loa", unit: "Tr.đ", target: 4.13, prev: 0.37, curr: 0.37, note: "Bán kèm giải trí", aliases: ["loa phụ kiện", "loa"] },
+                { stt: 28, name: "T11 - Bảo hiểm Tổng", short: "BH Tổng", unit: "Tr.đ", target: 32.76, prev: 16.63, curr: 16.63, note: "Giữ nhịp đều", aliases: ["bảo hiểm tổng", "bh tổng"] },
+                { stt: 29, name: "T11 - Tivi TCL", short: "Tivi TCL", unit: "Tr.đ", target: 16.01, prev: 0.00, curr: 0.00, note: "Combo Điện tử: cộng thẳng vào Điện tử", aliases: ["tivi tcl", "tcl", "điện tử tcl"] },
+                { stt: 30, name: "T11 - Điện thoại Realme", short: "realme", unit: "Tr.đ", target: 31.63, prev: 0.00, curr: 0.00, note: "Combo Android: cộng thẳng vào Android", aliases: ["realme", "điện thoại realme"] },
+                { stt: 31, name: "T11 - Phụ kiện công nghệ", short: "PK công nghệ", unit: "Tr.đ", target: 1.54, prev: 0.00, curr: 0.00, note: "Phá băng 0%", aliases: ["phụ kiện công nghệ", "pk công nghệ"] },
+                { stt: 32, name: "T11 - Đèn năng lượng mặt trời", short: "Đèn NLMT", unit: "SL", target: 4, prev: 4, curr: 4, note: "Đã đạt 4/4 cái", aliases: ["đèn năng lượng", "đèn năng lượng mặt trời", "đèn"] },
+                { stt: 33, name: "T11 - Sim ĐMX", short: "Sim ĐMX", unit: "SL", target: 16.80, prev: 8, curr: 8, note: "Combo Sim: 1 Sim ĐMX ăn cả Sim ĐMX + Sim", aliases: ["sim đmx"] },
+                { stt: 34, name: "T11 - Sim", short: "Sim", unit: "SL", target: 21, prev: 10, curr: 10, note: "Combo Sim: ghép chung Sim ĐMX", aliases: ["sim"] },
+                { stt: 35, name: "T11 - Máy nước nóng", short: "MNN", unit: "SL", target: 8, prev: 2, curr: 2, note: "Đẩy thêm đơn MNN", aliases: ["máy nước nóng", "mnn"] },
+                { stt: 36, name: "T11 - Máy Lạnh", short: "Máy Lạnh", unit: "SL", target: 8.67, prev: 5, curr: 6, note: "Tăng +1 máy ngày 23", aliases: ["máy lạnh"] },
+                { stt: 37, name: "T11 - Nạp rút", short: "Nạp rút", unit: "SL", target: 21, prev: 20, curr: 21, note: "Đã hoàn thành 21/21 GD!", aliases: ["nạp rút"] },
+                { stt: 38, name: "T11 - VAS", short: "Vas", unit: "SL", target: 101, prev: 40, curr: 40, note: "Chốt đều thu hộ/thanh toán", aliases: ["vas"] },
+                { stt: 39, name: "T11 - MỞ THẺ TÍN DỤNG VPBANK MWG VÀ TPBANK EVO", short: "Mở thẻ TD", unit: "SL", target: 1, prev: 1, curr: 1, note: "Đã đạt 1/1 thẻ", aliases: ["mở thẻ", "thẻ tín dụng", "mở thẻ tín dụng vpbank mwg và tpbank evo", "mở thẻ tín dụng vpbank & tpbank evo", "vpbank", "tpbank"] }
+            ]
+        };
+
+        const STORAGE_KEY = 'thi_dua_t11_thuan_168806_v8';
+        const HISTORY_KEY = 'thi_dua_t11_thuan_168806_history_45d_v2';
+        const PREFS_KEY = 'thi_dua_t11_thuan_168806_prefs_v2';
+        const MAX_HISTORY_DAYS = 45;
+
+        let currentFilter = 'all';
+        let justUpdatedStts = new Set();
+        let tableZoomPct = 100;
+        let isTableFullscreen = false;
+        let selectedHistoryId = null;
+        let compareRefId = 'auto';
+        let viewMode = window.innerWidth < 768 ? 'cards' : 'table';
+        let isDarkMode = false;
+        const DEFAULT_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwvQ77k6Y8kaKG86GyQD2_vxQSwsHHAM6lhZzpkWHO6_vBCvexkzo89mIHIw9D9x6px/exec';
+        let appsScriptUrl = DEFAULT_APPS_SCRIPT_URL;
+        let autoSyncOnLoad = true;
+        let lastDriveRawJson = '';
+        let isSyncingDrive = false;
+
+        // --- HÀM CHUẨN HÓA & ĐỒNG NGHĨA ---
+        function normalizeText(str) {
+            return String(str || '')
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/gi, 'd')
+                .toLowerCase()
+                .replace(/^t\d+\s*[-–—]\s*/i, '')
+                .replace(/&/g, ' va ')
+                .replace(/[\/\\,\.\+\(\)\[\]\-–—_]/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function extractMonthPrefix(str) {
+            const m = String(str || '').trim().match(/^(T\d{1,2})\s*[-–—]/i);
+            return m ? m[1].toUpperCase() : '';
+        }
+
+        function getDaysForMonthPrefix(prefix) {
+            const m = String(prefix || '').match(/^T(\d{1,2})$/i);
+            if (!m) return 30;
+            const monthNum = parseInt(m[1], 10);
+            if ([1, 3, 5, 7, 8, 10, 12].includes(monthNum)) return 31;
+            if (monthNum === 2) return 28;
+            return 30;
+        }
+
+        function autoGenerateShortName(rawName) {
+            const clean = String(rawName).replace(/^T\d+\s*[-–—]\s*/i, '').trim();
+            const lower = clean.toLowerCase();
+            if (lower.includes('máy sấy') || lower.includes('rửa chén')) return 'MS / MRC';
+            if (lower.includes('fecredit') || lower.includes('shinhan')) return 'Fe / SS F+ / Shinhan';
+            if (lower.includes('homecredit')) return 'HC';
+            if (lower.includes('sạc dự phòng')) return 'SDP';
+            if (lower.includes('tủ lạnh')) return 'Tủ lạnh';
+            if (lower.includes('điện thoại & tablet android')) return 'Android';
+            if (lower.includes('nồi cơm')) return 'Nồi cơm, chiên';
+            if (lower === 'máy giặt') return 'MG';
+            if (lower.includes('lọc kk') || lower.includes('hút bụi')) return 'Hút bụi / Lọc KK';
+            if (lower.includes('phụ kiện khác it')) return 'PK khác IT';
+            if (lower.includes('trả chậm điện máy')) return 'Trả chậm ĐM & GD';
+            if (lower.includes('đồng hồ')) return 'ĐHTT/wear';
+            if (lower.includes('vivo')) return 'Vivo';
+            if (lower === 'điện tử') return 'Điện tử (tổng)';
+            if (lower.includes('điện tử samsung')) return 'Tivi Samsung';
+            if (lower.includes('tcl')) return 'Tivi TCL';
+            if (lower.includes('realme')) return 'realme';
+            if (lower.includes('bảo hiểm thợ đmx')) return 'BH ĐMX';
+            if (lower.includes('bảo hiểm thợ ict')) return 'BH ICT';
+            if (lower.includes('bảo hiểm tổng')) return 'BH Tổng';
+            if (lower.includes('loa')) return 'Loa';
+            if (lower.includes('phụ kiện công nghệ')) return 'PK công nghệ';
+            if (lower.includes('đèn năng lượng')) return 'Đèn NLMT';
+            if (lower.includes('máy nước nóng')) return 'MNN';
+            if (lower.includes('mở thẻ')) return 'Mở thẻ TD';
+            return clean.length > 22 ? clean.slice(0, 20) + '…' : clean;
+        }
+
+        function autoGenerateNote(rawName) {
+            const lower = String(rawName).toLowerCase();
+            if (lower.includes('android') && !lower.includes('vivo') && !lower.includes('realme')) return 'Combo Android: nhận thêm từ Vivo & Realme';
+            if (lower.includes('vivo') || lower.includes('realme')) return 'Combo Android: cộng thẳng vào Android';
+            if (lower.endsWith('- điện tử') || lower === 'điện tử') return 'Combo Điện tử: nhận thêm từ SS & TCL';
+            if (lower.includes('samsung') && lower.includes('điện tử')) return 'Combo Điện tử: cộng thẳng vào Điện tử';
+            if (lower.includes('tcl')) return 'Combo Điện tử: cộng thẳng vào Điện tử';
+            if (lower.includes('sim đmx')) return 'Combo Sim: 1 Sim ĐMX ăn cả Sim ĐMX + Sim';
+            if (lower.endsWith('- sim') || lower === 'sim') return 'Combo Sim: ghép chung Sim ĐMX';
+            if (lower.includes('homecredit')) return 'Trọng tâm trả chậm HC';
+            return 'Bám sát nhịp độ ngày';
+        }
+
+        function loadPrefs() {
+            try {
+                const raw = localStorage.getItem(PREFS_KEY);
+                if (raw) {
+                    const p = JSON.parse(raw);
+                    if (p.viewMode === 'cards' || p.viewMode === 'table') viewMode = p.viewMode;
+                    if (typeof p.isDarkMode === 'boolean') isDarkMode = p.isDarkMode;
+                    if (typeof p.compareRefId === 'string') compareRefId = p.compareRefId;
+                    if (typeof p.appsScriptUrl === 'string' && p.appsScriptUrl.trim()) {
+                        appsScriptUrl = p.appsScriptUrl.trim();
+                    }
+                    if (typeof p.autoSyncOnLoad === 'boolean') autoSyncOnLoad = p.autoSyncOnLoad;
+                }
+            } catch (e) {}
+            applyDarkModeUI();
+            applyViewModeUI();
+            updateScriptUrlUI();
+        }
+
+        function savePrefs() {
+            try {
+                localStorage.setItem(PREFS_KEY, JSON.stringify({ viewMode, isDarkMode, compareRefId, appsScriptUrl, autoSyncOnLoad }));
+            } catch (e) {}
+        }
+
+        function toggleAutoSync(checked) {
+            autoSyncOnLoad = !!checked;
+            savePrefs();
+            showToast(autoSyncOnLoad ? "Đã bật tự động đồng bộ khi mở app" : "Đã tắt tự động đồng bộ khi mở app");
+        }
+
+        function toggleDriveDebugBox() {
+            const box = document.getElementById('driveDebugBox');
+            if (!box) return;
+            box.classList.toggle('hidden');
+            if (!box.classList.contains('hidden') && lastDriveRawJson) {
+                box.value = lastDriveRawJson;
+            }
+        }
+
+        function copyDriveDebugJson() {
+            if (!lastDriveRawJson) {
+                showToast("Chưa có dữ liệu Drive! Hãy bấm 'Đồng Bộ Drive' trước.");
+                return;
+            }
+            copyTextToClipboard(lastDriveRawJson, "Đã copy toàn bộ JSON chẩn đoán từ Drive!");
+        }
+
+        function applyDarkModeUI() {
+            const htmlEl = document.documentElement;
+            const sunIcon = document.getElementById('themeIconSun');
+            const moonIcon = document.getElementById('themeIconMoon');
+            if (isDarkMode) {
+                htmlEl.classList.add('dark');
+                if (sunIcon) sunIcon.classList.remove('hidden');
+                if (moonIcon) moonIcon.classList.add('hidden');
+            } else {
+                htmlEl.classList.remove('dark');
+                if (sunIcon) sunIcon.classList.add('hidden');
+                if (moonIcon) moonIcon.classList.remove('hidden');
+            }
+        }
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            applyDarkModeUI();
+            savePrefs();
+            showToast(isDarkMode ? "Đã bật giao diện Tối" : "Đã bật giao diện Sáng");
+        }
+
+        function updateScriptUrlUI() {
+            const input = document.getElementById('appsScriptUrlInput');
+            const badge = document.getElementById('scriptUrlStatusBadge');
+            const autoToggle = document.getElementById('autoSyncToggle');
+            if (input) input.value = appsScriptUrl || '';
+            if (autoToggle) autoToggle.checked = autoSyncOnLoad;
+            if (badge) {
+                if (appsScriptUrl && appsScriptUrl.startsWith('http')) {
+                    badge.textContent = 'Đã kết nối';
+                    badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300';
+                } else {
+                    badge.textContent = 'Chưa gắn link';
+                    badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300';
+                }
+            }
+        }
+
+        function saveAppsScriptUrl() {
+            const input = document.getElementById('appsScriptUrlInput');
+            if (!input) return;
+            const cleanedUrl = input.value.trim();
+            if (cleanedUrl && !cleanedUrl.startsWith('http')) {
+                showToast("Link không hợp lệ! Phải bắt đầu bằng https://");
+                return;
+            }
+            appsScriptUrl = cleanedUrl || DEFAULT_APPS_SCRIPT_URL;
+            savePrefs();
+            updateScriptUrlUI();
+            showToast("Đã lưu đường link đồng bộ Google Drive!");
+        }
+
+        async function syncFromGoogleDrive(silent = false) {
+            if (isSyncingDrive) return;
+            if (!appsScriptUrl || !appsScriptUrl.startsWith('http')) {
+                if (!silent) {
+                    openSettingsModal();
+                    setTimeout(() => {
+                        const input = document.getElementById('appsScriptUrlInput');
+                        if (input) input.focus();
+                    }, 150);
+                    showToast("Hãy dán link Web App vào ô này rồi bấm Lưu!");
+                }
+                return;
+            }
+
+            isSyncingDrive = true;
+            const icon1 = document.getElementById('syncDriveHeaderIcon');
+            const icon2 = document.getElementById('syncDriveMobileIcon');
+            if (icon1) icon1.classList.add('animate-spin');
+            if (icon2) icon2.classList.add('animate-spin');
+            if (!silent) showToast("Đang kéo dữ liệu mới nhất từ Google Drive...");
+
+            try {
+                const sep = appsScriptUrl.includes('?') ? '&' : '?';
+                const fetchUrl = `${appsScriptUrl}${sep}_t=${Date.now()}`;
+                const response = await fetch(fetchUrl, { method: 'GET', redirect: 'follow' });
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                const parsedJson = await response.json();
+                lastDriveRawJson = JSON.stringify(parsedJson, null, 2);
+                const debugBox = document.getElementById('driveDebugBox');
+                if (debugBox) debugBox.value = lastDriveRawJson;
+
+                // Hiển thị tóm tắt nguồn sheet đọc được trong phần Cài đặt
+                const diagEl = document.getElementById('driveSyncDiagSummary');
+                if (diagEl) {
+                    const src = parsedJson.debug_source_sheet || 'Không rõ';
+                    const matched = parsedJson.debug_matched_count !== undefined ? parsedJson.debug_matched_count : '?';
+                    const total = Array.isArray(parsedJson.categories) ? parsedJson.categories.length : '?';
+                    diagEl.innerHTML = `<strong>Nguồn:</strong> ${src} • <strong>Khớp:</strong> ${matched}/${total} ngành • <strong>LK QĐ:</strong> ${parsedJson.doanh_thu_lk ?? '--'}`;
+                    diagEl.classList.remove('hidden');
+                }
+
+                closeSettingsModal();
+                applyJsonPayload(parsedJson, "Đồng bộ từ Google Drive");
+            } catch (err) {
+                console.error("Sync Drive error:", err);
+                if (!silent) showToast("Không đọc được dữ liệu từ link! Kiểm tra quyền 'Bất kỳ ai' khi Deploy.");
+            } finally {
+                isSyncingDrive = false;
+                if (icon1) icon1.classList.remove('animate-spin');
+                if (icon2) icon2.classList.remove('animate-spin');
+            }
+        }
+
+        function setViewMode(mode) {
+            viewMode = mode;
+            applyViewModeUI();
+            savePrefs();
+            renderTable();
+        }
+
+        function applyViewModeUI() {
+            const cardsEl = document.getElementById('mobileCardsContainer');
+            const tableEl = document.getElementById('tableScrollWrapper');
+            const btnCards = document.getElementById('btnViewCards');
+            const btnTable = document.getElementById('btnViewTable');
+
+            if (viewMode === 'cards') {
+                if (cardsEl) cardsEl.classList.remove('hidden');
+                if (tableEl) tableEl.classList.add('hidden');
+                if (btnCards) btnCards.className = "min-h-[34px] px-2.5 py-1 rounded-lg text-xs font-bold bg-white dark:bg-slate-700 text-navy-900 dark:text-white shadow-2xs transition flex items-center gap-1";
+                if (btnTable) btnTable.className = "min-h-[34px] px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-400 transition flex items-center gap-1";
+            } else {
+                if (cardsEl) cardsEl.classList.add('hidden');
+                if (tableEl) tableEl.classList.remove('hidden');
+                if (btnTable) btnTable.className = "min-h-[34px] px-2.5 py-1 rounded-lg text-xs font-bold bg-white dark:bg-slate-700 text-navy-900 dark:text-white shadow-2xs transition flex items-center gap-1";
+                if (btnCards) btnCards.className = "min-h-[34px] px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-400 transition flex items-center gap-1";
+            }
+        }
+
+        function loadState() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('thi_dua_t11_thuan_168806_v7');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed && Array.isArray(parsed.items) && parsed.items.length > 0) {
+                        if (!parsed.daysInMonth || parsed.daysInMonth < 28 || parsed.daysInMonth > 31) {
+                            parsed.daysInMonth = getDaysForMonthPrefix(extractMonthPrefix(parsed.items[0].name)) || 30;
+                        }
+                        if (!parsed.monthPrefix) {
+                            parsed.monthPrefix = extractMonthPrefix(parsed.items[0].name) || 'T11';
+                        }
+                        // Chuyển đổi danh sách tick ca từ STT cũ sang tên ngành chuẩn hóa
+                        if (!Array.isArray(parsed.shiftCheckedNames)) {
+                            parsed.shiftCheckedNames = [];
+                            if (Array.isArray(parsed.shiftCheckedStts)) {
+                                parsed.shiftCheckedStts.forEach(stt => {
+                                    const found = parsed.items.find(x => x.stt === stt);
+                                    if (found) parsed.shiftCheckedNames.push(normalizeText(found.name));
+                                });
+                            }
+                        }
+                        return parsed;
+                    }
+                }
+            } catch (e) {
+                console.error("Error loading state:", e);
+            }
+            return JSON.parse(JSON.stringify(INITIAL_STATE));
+        }
+
+        let appState = loadState();
+
+        function saveState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+            } catch (e) {
+                console.error("Error saving state:", e);
+            }
+        }
+
+        function isItemShiftChecked(item) {
+            const list = appState.shiftCheckedNames || [];
+            return list.includes(normalizeText(item.name));
+        }
+
+        function toggleShiftCheck(stt) {
+            const item = appState.items.find(x => x.stt === stt);
+            if (!item) return;
+            if (!Array.isArray(appState.shiftCheckedNames)) appState.shiftCheckedNames = [];
+            const key = normalizeText(item.name);
+            const idx = appState.shiftCheckedNames.indexOf(key);
+            if (idx === -1) {
+                appState.shiftCheckedNames.push(key);
+            } else {
+                appState.shiftCheckedNames.splice(idx, 1);
+            }
+            saveState();
+            renderTable();
+        }
+
+        function resetShiftChecks() {
+            appState.shiftCheckedNames = [];
+            saveState();
+            renderTable();
+            showToast("Đã đặt lại toàn bộ dấu tick ca!");
+        }
+
+        // --- LỊCH SỬ LƯU TRỮ 45 NGÀY ---
+        function isCorruptedHistoryEntry(entry) {
+            if (!entry || !entry.data || typeof entry.data !== 'object') return true;
+            const keys = Object.keys(entry.data);
+            if (keys.length === 0) return true;
+            return keys.some(k => {
+                const u = String(k).trim().toUpperCase();
+                return u === 'LŨY KẾ' || u === 'LUỸ KẾ';
+            });
+        }
+
+        function pruneOldHistory(list) {
+            const cutoffMs = Date.now() - MAX_HISTORY_DAYS * 24 * 60 * 60 * 1000;
+            return (list || []).filter(entry => (entry.timestamp || 0) >= cutoffMs && !isCorruptedHistoryEntry(entry));
+        }
+
+        function buildDefaultHistory() {
+            const now = Date.now();
+            const day22Data = {};
+            const day23Data = {};
+            INITIAL_STATE.items.forEach(it => {
+                day22Data[it.name] = it.prev;
+                day23Data[it.name] = it.curr;
+            });
+            return [
+                {
+                    id: 'snap_day_23',
+                    timestamp: now - 1800 * 1000,
+                    dateLabel: 'Ngày 23/30 (Chốt gần nhất)',
+                    daysPassed: 23,
+                    daysInMonth: 30,
+                    monthPrefix: 'T11',
+                    totalTarget: 1617.00,
+                    currTotalRevenue: 792.79,
+                    revDelta: 21.07,
+                    changedSummary: ['Tủ lạnh +6,66 tr', 'Trả chậm ĐM & GD +6,15 tr', 'PK khác IT +1,53 tr', 'Quạt +0,81 tr', 'Máy Lạnh +1 SL', 'Nạp rút +1 SL'],
+                    data: day23Data
+                },
+                {
+                    id: 'snap_day_22',
+                    timestamp: now - 25 * 3600 * 1000,
+                    dateLabel: 'Ngày 22/30 (22/11)',
+                    daysPassed: 22,
+                    daysInMonth: 30,
+                    monthPrefix: 'T11',
+                    totalTarget: 1617.00,
+                    currTotalRevenue: 771.72,
+                    revDelta: 0,
+                    changedSummary: ['Mốc dữ liệu Ngày 22/30'],
+                    data: day22Data
+                }
+            ];
+        }
+
+        function loadHistory() {
+            try {
+                const raw = localStorage.getItem(HISTORY_KEY);
+                if (raw) {
+                    const parsed = pruneOldHistory(JSON.parse(raw));
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        return parsed;
+                    }
+                }
+            } catch (e) {}
+            const seed = buildDefaultHistory();
+            saveHistory(seed);
+            return seed;
+        }
+
+        function saveHistory(list) {
+            try {
+                const cleaned = pruneOldHistory(list);
+                localStorage.setItem(HISTORY_KEY, JSON.stringify(cleaned));
+                updateHistoryBadge(cleaned.length);
+            } catch (e) {}
+        }
+
+        let historyLog = loadHistory();
+
+        function updateHistoryBadge(count) {
+            const el1 = document.getElementById('historyCountBadge');
+            const el2 = document.getElementById('mobileHistoryBadge');
+            if (el1) el1.textContent = count;
+            if (el2) el2.textContent = count;
+        }
+
+        function recordHistorySnapshot(customNote, isManual = false) {
+            const now = new Date();
+            const pad = n => String(n).padStart(2, '0');
+            const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())} - ${pad(now.getDate())}/${pad(now.getMonth() + 1)}`;
+            const snapData = {};
+            const changes = [];
+            const refBaseline = resolveCompareBaseline();
+            const daysInMonth = appState.daysInMonth || 30;
+
+            appState.items.forEach(it => {
+                snapData[it.name] = it.curr;
+                const baseVal = refBaseline.itemMap[it.name] !== undefined
+                    ? refBaseline.itemMap[it.name]
+                    : getSnapshotItemValue(refBaseline.itemMap, it);
+                const d = Number((it.curr - baseVal).toFixed(2));
+                if (d !== 0) {
+                    const sign = d > 0 ? '+' : '';
+                    const unitTxt = it.unit === 'Tr.đ' ? ' tr' : ' SL';
+                    changes.push(`${it.short} ${sign}${formatNum(d, it.unit)}${unitTxt}`);
+                }
+            });
+
+            if (customNote) {
+                changes.unshift(customNote);
+            }
+
+            const entry = {
+                id: 'snap_' + Date.now(),
+                timestamp: Date.now(),
+                dateLabel: `Ngày ${appState.daysPassed}/${daysInMonth} (${timeStr})`,
+                daysPassed: appState.daysPassed,
+                daysInMonth: daysInMonth,
+                monthPrefix: appState.monthPrefix || 'T11',
+                totalTarget: appState.totalTarget,
+                currTotalRevenue: appState.currTotalRevenue,
+                revDelta: Number((appState.currTotalRevenue - refBaseline.totalRevenue).toFixed(2)),
+                changedSummary: changes.length > 0 ? changes : ['Cập nhật đồng bộ số liệu'],
+                data: snapData
+            };
+
+            // Nếu đồng bộ tự động nhiều lần trong cùng 1 ngày & cùng tháng, cập nhật đè vào bản ghi ngày đó để không làm rác lịch sử
+            const filtered = isManual
+                ? historyLog
+                : historyLog.filter(h => !(h.daysPassed === appState.daysPassed && (h.monthPrefix || 'T11') === (appState.monthPrefix || 'T11')));
+            historyLog = pruneOldHistory([entry, ...filtered]);
+            saveHistory(historyLog);
+        }
+
+        function saveManualSnapshot() {
+            recordHistorySnapshot('Lưu thủ công', true);
+            renderHistoryModal();
+            showToast("Đã lưu mốc hiện tại vào Lịch sử 45 ngày!");
+        }
+
+        function openHistoryModal() {
+            historyLog = pruneOldHistory(historyLog);
+            saveHistory(historyLog);
+            if (!selectedHistoryId && historyLog.length > 0) {
+                selectedHistoryId = historyLog[0].id;
+            }
+            renderHistoryModal();
+            document.getElementById('historyModal').classList.remove('hidden');
+        }
+
+        function closeHistoryModal() {
+            document.getElementById('historyModal').classList.add('hidden');
+        }
+
+        function selectHistoryEntry(id) {
+            selectedHistoryId = id;
+            renderHistoryModal();
+        }
+
+        function getSnapshotItemValue(snapData, item) {
+            if (!snapData) return 0;
+            if (typeof snapData[item.name] === 'number') return snapData[item.name];
+            const normTarget = normalizeText(item.name);
+            for (const [k, v] of Object.entries(snapData)) {
+                if (typeof v === 'number' && normalizeText(k) === normTarget) {
+                    return v;
+                }
+            }
+            for (const [k, v] of Object.entries(snapData)) {
+                if (typeof v === 'number') {
+                    const nk = normalizeText(k);
+                    if (nk && (nk === normalizeText(item.short) || (item.aliases || []).some(a => normalizeText(a) === nk))) {
+                        return v;
+                    }
+                }
+            }
+            if (typeof snapData[String(item.stt)] === 'number') return snapData[String(item.stt)];
+            return 0;
+        }
+
+        function restoreHistoryEntry(id) {
+            const entry = historyLog.find(h => h.id === id);
+            if (!entry || !entry.data) return;
+
+            justUpdatedStts.clear();
+            appState.daysPassed = entry.daysPassed || appState.daysPassed;
+            appState.daysInMonth = entry.daysInMonth || appState.daysInMonth || 30;
+            if (entry.monthPrefix) appState.monthPrefix = entry.monthPrefix;
+            appState.totalTarget = entry.totalTarget || appState.totalTarget;
+            appState.prevTotalRevenue = appState.currTotalRevenue;
+            appState.currTotalRevenue = entry.currTotalRevenue;
+
+            appState.items.forEach(it => {
+                const val = getSnapshotItemValue(entry.data, it);
+                if (typeof val === 'number' && !isNaN(val)) {
+                    if (val !== it.curr) {
+                        it.prev = it.curr;
+                        it.curr = val;
+                        justUpdatedStts.add(it.stt);
+                    }
+                    it.unmatchedDrive = false;
+                }
+            });
+
+            saveState();
+            closeHistoryModal();
+            renderTable();
+            showToast(`Đã khôi phục dữ liệu từ mốc: ${entry.dateLabel}`);
+        }
+
+        function deleteHistoryEntry(id, event) {
+            if (event) event.stopPropagation();
+            historyLog = historyLog.filter(h => h.id !== id);
+            if (selectedHistoryId === id) {
+                selectedHistoryId = historyLog.length > 0 ? historyLog[0].id : null;
+            }
+            saveHistory(historyLog);
+            renderHistoryModal();
+            showToast("Đã xóa bản ghi lịch sử!");
+        }
+
+        function copyHistoryJson(id) {
+            const entry = historyLog.find(h => h.id === id);
+            if (!entry) return;
+            const namedData = {};
+            appState.items.forEach(it => {
+                namedData[it.name] = getSnapshotItemValue(entry.data, it);
+            });
+            const payload = {
+                ngay_da_chay: entry.daysPassed,
+                tong_ngay_thang: entry.daysInMonth || 30,
+                tong_target: entry.totalTarget,
+                doanh_thu_lk: entry.currTotalRevenue,
+                data: namedData
+            };
+            copyTextToClipboard(JSON.stringify(payload, null, 2), "Đã copy JSON của mốc lịch sử này!");
+        }
+
+        function renderHistoryModal() {
+            document.getElementById('historyModalTotal').textContent = historyLog.length;
+            const listEl = document.getElementById('historyListContainer');
+            const detailEl = document.getElementById('historyDetailContainer');
+
+            if (historyLog.length === 0) {
+                listEl.innerHTML = `<div class="text-xs text-slate-400 italic py-6 text-center">Chưa có bản ghi lịch sử nào trong 45 ngày qua.</div>`;
+                detailEl.innerHTML = '';
+                return;
+            }
+
+            if (!historyLog.some(h => h.id === selectedHistoryId)) {
+                selectedHistoryId = historyLog[0].id;
+            }
+
+            listEl.innerHTML = historyLog.map(entry => {
+                const isSelected = entry.id === selectedHistoryId;
+                const dSign = entry.revDelta > 0 ? '+' : '';
+                const deltaHtml = entry.revDelta !== 0
+                    ? `<span class="text-[11px] font-bold ${entry.revDelta > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600'}">${dSign}${Number(entry.revDelta || 0).toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} tr</span>`
+                    : `<span class="text-[11px] text-slate-400">0,00 tr</span>`;
+
+                return `
+                <div onclick="selectHistoryEntry('${entry.id}')"
+                    class="cursor-pointer p-3 rounded-xl border transition ${isSelected ? 'bg-sky-50 dark:bg-sky-950/50 border-sky-400 shadow-2xs' : 'bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 hover:bg-slate-50'}">
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="font-bold text-xs text-slate-900 dark:text-white">${entry.dateLabel}</span>
+                        <button type="button" onclick="deleteHistoryEntry('${entry.id}', event)" title="Xóa bản ghi" class="text-slate-400 hover:text-rose-600 p-1">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        </button>
+                    </div>
+                    <div class="mt-1 flex items-center justify-between text-xs">
+                        <span class="text-slate-600 dark:text-slate-400">LK: <strong class="text-navy-800 dark:text-sky-400">${Number(entry.currTotalRevenue || 0).toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} tr</strong></span>
+                        ${deltaHtml}
+                    </div>
+                    <div class="mt-1.5 text-[11px] text-slate-500 truncate">
+                        ${(entry.changedSummary || []).slice(0, 3).join(' • ')}
+                    </div>
+                </div>`;
+            }).join('');
+
+            const activeEntry = historyLog.find(h => h.id === selectedHistoryId);
+            if (!activeEntry) return;
+
+            const eDaysInMonth = activeEntry.daysInMonth || 30;
+            const daysLeft = Math.max(0, eDaysInMonth - (activeEntry.daysPassed || 23));
+            const projPct = activeEntry.totalTarget > 0
+                ? (((activeEntry.currTotalRevenue / Math.max(1, activeEntry.daysPassed)) * eDaysInMonth) / activeEntry.totalTarget) * 100
+                : 0;
+
+            const rowsHtml = appState.items.map(it => {
+                const val = getSnapshotItemValue(activeEntry.data, it);
+                const pct = it.target > 0 ? Math.round(((val / Math.max(1, activeEntry.daysPassed)) * eDaysInMonth / it.target) * 100) : 0;
+                return `
+                <tr class="border-b border-slate-100 dark:border-slate-800">
+                    <td class="py-1.5 px-2 text-slate-400 text-center">${it.stt}</td>
+                    <td class="py-1.5 px-2 font-medium text-slate-800 dark:text-slate-200">${it.short}</td>
+                    <td class="py-1.5 px-2 text-right font-bold text-navy-900 dark:text-sky-400">${formatNum(val, it.unit)} <span class="text-[10px] font-normal text-slate-400">${it.unit}</span></td>
+                    <td class="py-1.5 px-2 text-center font-semibold ${pct >= 100 ? 'text-emerald-600' : (pct >= 50 ? 'text-amber-600' : 'text-rose-600')}">${pct}%</td>
+                </tr>`;
+            }).join('');
+
+            detailEl.innerHTML = `
+                <div class="bg-slate-50 dark:bg-slate-950 rounded-xl p-3 border border-slate-200 dark:border-slate-800">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <div class="text-xs font-bold text-slate-900 dark:text-white">${activeEntry.dateLabel}</div>
+                            <div class="text-[11px] text-slate-500">Còn ${daysLeft} ngày • Dự kiến đạt: <strong>${projPct.toFixed(1).replace('.', ',')}%</strong></div>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <button type="button" onclick="copyHistoryJson('${activeEntry.id}')" class="min-h-[34px] px-2.5 py-1.5 text-[11px] font-semibold bg-white dark:bg-slate-800 hover:bg-slate-100 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 rounded-lg transition">Copy JSON</button>
+                            <button type="button" onclick="restoreHistoryEntry('${activeEntry.id}')" class="min-h-[34px] px-2.5 py-1.5 text-[11px] font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg shadow-2xs transition">Khôi phục mốc này</button>
+                        </div>
+                    </div>
+                    <div class="mt-2 flex flex-wrap gap-1.5">
+                        ${(activeEntry.changedSummary || []).map(tag => `<span class="px-2 py-0.5 rounded-md bg-emerald-100/80 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300 text-[11px] font-medium">${tag}</span>`).join('')}
+                    </div>
+                </div>
+                <div class="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden max-h-[34vh] overflow-y-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead class="bg-slate-800 text-white text-[11px] sticky top-0">
+                            <tr>
+                                <th class="py-2 px-2 text-center w-10">STT</th>
+                                <th class="py-2 px-2">Ngành hàng</th>
+                                <th class="py-2 px-2 text-right">Lũy kế mốc</th>
+                                <th class="py-2 px-2 text-center">% DK</th>
+                            </tr>
+                        </thead>
+                        <tbody>${rowsHtml}</tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        // --- FULLSCREEN & ZOOM CONTROLS ---
+        function changeTableZoom(delta) {
+            tableZoomPct = Math.max(85, Math.min(145, tableZoomPct + delta));
+            applyTableZoom();
+        }
+
+        function resetTableZoom() {
+            tableZoomPct = 100;
+            applyTableZoom();
+        }
+
+        function applyTableZoom() {
+            const table = document.getElementById('mainDataTable');
+            const cards = document.getElementById('mobileCardsContainer');
+            const label = document.getElementById('zoomLevelLabel');
+            if (table) table.style.fontSize = `${(12 * tableZoomPct) / 100}px`;
+            if (cards) cards.style.fontSize = `${(13 * tableZoomPct) / 100}px`;
+            if (label) label.textContent = `${tableZoomPct}%`;
+        }
+
+        function toggleTableFullscreen() {
+            const section = document.getElementById('tableSection');
+            const expandIcon = document.getElementById('fullscreenIconExpand');
+            const compressIcon = document.getElementById('fullscreenIconCompress');
+            const btnText = document.getElementById('fullscreenBtnText');
+
+            isTableFullscreen = !isTableFullscreen;
+            if (isTableFullscreen) {
+                section.classList.add('table-fullscreen-active');
+                document.body.style.overflow = 'hidden';
+                if (expandIcon) expandIcon.classList.add('hidden');
+                if (compressIcon) compressIcon.classList.remove('hidden');
+                if (btnText) btnText.textContent = 'Thu Nhỏ';
+            } else {
+                section.classList.remove('table-fullscreen-active');
+                document.body.style.overflow = '';
+                if (expandIcon) expandIcon.classList.remove('hidden');
+                if (compressIcon) compressIcon.classList.add('hidden');
+                if (btnText) btnText.textContent = 'Toàn Màn Hình';
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isTableFullscreen) {
+                toggleTableFullscreen();
+            }
+        });
+
+        // --- CORE CALCULATIONS & UI RENDERING ---
+        function formatNum(val, unit) {
+            const num = Number(val);
+            if (isNaN(num)) return '0';
+            if (unit === 'SL') {
+                return Number.isInteger(num) ? num.toString() : num.toFixed(1).replace('.', ',');
+            }
+            return num.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function resolveCompareBaseline() {
+            const itemMap = {};
+            let totalRevenue = appState.prevTotalRevenue;
+            let label = 'Mốc trước';
+            let matchedEntry = null;
+            const curMonth = appState.monthPrefix || 'T11';
+
+            if (compareRefId !== 'auto') {
+                matchedEntry = historyLog.find(h => h.id === compareRefId) || null;
+                if (!matchedEntry) {
+                    compareRefId = 'auto';
+                    savePrefs();
+                }
+            }
+
+            if (!matchedEntry && Array.isArray(historyLog) && historyLog.length > 0) {
+                // Ưu tiên tìm ngày liền kề trước đó TRONG CÙNG THÁNG
+                const prevDayEntries = historyLog
+                    .filter(h => (h.monthPrefix || 'T11') === curMonth && (h.daysPassed || 0) < appState.daysPassed)
+                    .sort((a, b) => (b.daysPassed - a.daysPassed) || (b.timestamp - a.timestamp));
+
+                if (prevDayEntries.length > 0) {
+                    matchedEntry = prevDayEntries[0];
+                }
+            }
+
+            if (matchedEntry && matchedEntry.data) {
+                const eDim = matchedEntry.daysInMonth || appState.daysInMonth || 30;
+                totalRevenue = typeof matchedEntry.currTotalRevenue === 'number'
+                    ? matchedEntry.currTotalRevenue
+                    : appState.prevTotalRevenue;
+                label = `Ngày ${matchedEntry.daysPassed}/${eDim}`;
+                appState.items.forEach(it => {
+                    itemMap[it.name] = getSnapshotItemValue(matchedEntry.data, it);
+                });
+                return { itemMap, totalRevenue, label, entry: matchedEntry };
+            }
+
+            // Nếu không có mốc ngày liền kề trước (ví dụ mới đầu tháng hoặc mới đồng bộ cùng ngày), so trực tiếp với item.prev
+            appState.items.forEach(it => {
+                itemMap[it.name] = typeof it.prev === 'number' ? it.prev : 0;
+            });
+            return { itemMap, totalRevenue, label: 'Trước đồng bộ', entry: null };
+        }
+
+        function calcItemMetrics(item, baselineObj) {
+            const daysInMonth = Math.max(28, Math.min(31, Number(appState.daysInMonth) || 30));
+            const daysPassed = Math.max(1, Math.min(daysInMonth, Number(appState.daysPassed) || 23));
+            const daysLeft = Math.max(0, daysInMonth - daysPassed);
+            const baseVal = (baselineObj && baselineObj.itemMap && baselineObj.itemMap[item.name] !== undefined)
+                ? baselineObj.itemMap[item.name]
+                : item.prev;
+            const delta = Number((item.curr - baseVal).toFixed(2));
+            const remaining = Math.max(0, Number((item.target - item.curr).toFixed(2)));
+            const dailyNeed = daysLeft > 0 ? remaining / daysLeft : 0;
+            const projected = (item.curr / daysPassed) * daysInMonth;
+            const projPct = item.target > 0 ? (projected / item.target) * 100 : 0;
+            return { baseVal, delta, remaining, dailyNeed, projPct, daysLeft };
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            toast.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                toast.classList.remove('-translate-y-2', 'sm:translate-y-2', 'opacity-0');
+            });
+            setTimeout(() => {
+                toast.classList.add('-translate-y-2', 'sm:translate-y-2', 'opacity-0');
+                setTimeout(() => toast.classList.add('hidden'), 300);
+            }, 3400);
+        }
+
+        function copyTextToClipboard(text, successMsg) {
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            temp.setSelectionRange(0, 99999);
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast(successMsg);
+        }
+
+        function clearSearch() {
+            const input = document.getElementById('searchInput');
+            input.value = '';
+            renderTable();
+        }
+
+        function updateDaysPassed(val) {
+            const dim = appState.daysInMonth || 30;
+            const n = Math.max(1, Math.min(dim, parseInt(val, 10) || 23));
+            appState.daysPassed = n;
+            saveState();
+            renderTable();
+            showToast(`Đã cập nhật ngày chạy: ${n}/${dim} (Còn ${Math.max(0, dim - n)} ngày)`);
+        }
+
+        function updateDaysInMonth(val) {
+            const dim = Math.max(28, Math.min(31, parseInt(val, 10) || 30));
+            appState.daysInMonth = dim;
+            if (appState.daysPassed > dim) appState.daysPassed = dim;
+            saveState();
+            renderTable();
+            showToast(`Đã cập nhật tổng số ngày trong tháng: ${dim} ngày`);
+        }
+
+        function updateTotalTarget(val) {
+            const n = parseFloat(val);
+            if (!isNaN(n) && n > 0) {
+                appState.totalTarget = n;
+                saveState();
+                renderTable();
+                showToast(`Đã cập nhật mục tiêu tháng: ${n.toLocaleString('vi-VN')} tr.đ`);
+            }
+        }
+
+        function updateTotalRevenue(val) {
+            const n = parseFloat(val);
+            if (!isNaN(n) && n >= 0) {
+                appState.prevTotalRevenue = appState.currTotalRevenue;
+                appState.currTotalRevenue = n;
+                saveState();
+                renderTable();
+                showToast(`Đã cập nhật lũy kế doanh số: ${n.toLocaleString('vi-VN')} tr.đ`);
+            }
+        }
+
+        function updateItemCurr(stt, newVal) {
+            const parsed = parseFloat(newVal);
+            if (isNaN(parsed) || parsed < 0) return;
+            const item = appState.items.find(x => x.stt === stt);
+            if (!item) return;
+            if (parsed !== item.curr) {
+                item.prev = item.curr;
+                item.curr = parsed;
+                item.unmatchedDrive = false;
+                justUpdatedStts.clear();
+                justUpdatedStts.add(stt);
+                saveState();
+                renderTable();
+                showToast(`Đã cập nhật ${item.short}: ${formatNum(parsed, item.unit)}`);
+            }
+        }
+
+        function changeCompareReference(val) {
+            compareRefId = val;
+            savePrefs();
+            renderTable();
+        }
+
+        function syncCompareSelectDropdown(baselineObj) {
+            const selectEl = document.getElementById('compareRefSelect');
+            const hintEl = document.getElementById('compareRefHint');
+            const thCol = document.getElementById('thCompareCol');
+            if (!selectEl) return;
+
+            const autoDesc = baselineObj.entry
+                ? `Tự động (${baselineObj.entry.dateLabel})`
+                : `Tự động (Trước đồng bộ)`;
+
+            let optionsHtml = `<option value="auto" ${compareRefId === 'auto' ? 'selected' : ''}>${autoDesc}</option>`;
+            historyLog.forEach(entry => {
+                const isSel = compareRefId === entry.id ? 'selected' : '';
+                optionsHtml += `<option value="${entry.id}" ${isSel}>${entry.dateLabel} • LK ${Number(entry.currTotalRevenue || 0).toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}tr</option>`;
+            });
+            selectEl.innerHTML = optionsHtml;
+
+            if (hintEl) {
+                hintEl.textContent = baselineObj.entry
+                    ? `Đang so với: ${baselineObj.entry.dateLabel}`
+                    : `Đang so với số liệu trước khi cập nhật`;
+            }
+            if (thCol) {
+                thCol.textContent = baselineObj.label;
+            }
+        }
+
+        function setFilter(filterKey) {
+            currentFilter = filterKey;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                const isSelected = btn.dataset.filter === filterKey;
+                if (isSelected) {
+                    btn.className = "filter-btn active shrink-0 min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-bold bg-navy-800 dark:bg-sky-600 text-white shadow-2xs transition";
+                } else if (btn.dataset.filter === 'changed') {
+                    btn.className = "filter-btn shrink-0 min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 transition";
+                } else if (btn.dataset.filter === 'shift_pending') {
+                    btn.className = "filter-btn shrink-0 min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-semibold bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 transition";
+                } else {
+                    btn.className = "filter-btn shrink-0 min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 transition";
+                }
+            });
+            renderTable();
+        }
+
+        function renderHeaderAndKPIs(baselineObj) {
+            const daysInMonth = Math.max(28, Math.min(31, Number(appState.daysInMonth) || 30));
+            const daysPassed = Math.max(1, Math.min(daysInMonth, Number(appState.daysPassed) || 23));
+            const daysLeft = Math.max(0, daysInMonth - daysPassed);
+            const totalItemsCount = appState.items.length;
+
+            syncCompareSelectDropdown(baselineObj);
+
+            document.getElementById('mainHeaderTitle').textContent = `Thi Đua ${totalItemsCount} Ngành (${appState.monthPrefix || 'T11'}) — Thuận (168806)`;
+            document.getElementById('strategicGroupTitle').textContent = `Phân Nhóm Chiến Thuật Chạy Số ${totalItemsCount} Ngành Hàng`;
+            document.getElementById('badgeDate').textContent = `Ngày ${daysPassed}/${daysInMonth} • Còn ${daysLeft} ngày`;
+            const syncBadge = document.getElementById('badgeLastSync');
+            if (syncBadge) {
+                if (appState.lastSyncLabel) {
+                    syncBadge.textContent = `Đổ số: ${appState.lastSyncLabel}`;
+                    syncBadge.classList.remove('hidden');
+                } else {
+                    syncBadge.classList.add('hidden');
+                }
+            }
+            document.getElementById('daysLeftPill').textContent = `Còn ${daysLeft} ngày`;
+            document.getElementById('daysPassedInput').value = daysPassed;
+            document.getElementById('daysInMonthInput').value = daysInMonth;
+            document.getElementById('totalTargetInput').value = Number(appState.totalTarget || 0).toFixed(2);
+            document.getElementById('totalRevenueInput').value = Number(appState.currTotalRevenue || 0).toFixed(2);
+            document.getElementById('kpiTargetSub').textContent = `${Number(appState.totalTarget || 0).toLocaleString('vi-VN', { maximumFractionDigits: 0 })} triệu đồng`;
+            updateHistoryBadge(historyLog.length);
+
+            const revDelta = Number((appState.currTotalRevenue - baselineObj.totalRevenue).toFixed(2));
+            const revDeltaEl = document.getElementById('kpiRevDelta');
+            if (revDelta > 0) {
+                revDeltaEl.textContent = `+${revDelta.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} tr vs ${baselineObj.label}`;
+                revDeltaEl.className = "text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 mt-1 truncate";
+            } else if (revDelta < 0) {
+                revDeltaEl.textContent = `${revDelta.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} tr vs ${baselineObj.label}`;
+                revDeltaEl.className = "text-[11px] font-semibold text-rose-600 mt-1 truncate";
+            } else {
+                revDeltaEl.textContent = `Chưa đổi vs ${baselineObj.label}`;
+                revDeltaEl.className = "text-[11px] text-slate-400 mt-1 truncate";
+            }
+
+            const remTotal = Math.max(0, appState.totalTarget - appState.currTotalRevenue);
+            const dailyNeed = daysLeft > 0 ? remTotal / daysLeft : 0;
+            const projPct = appState.totalTarget > 0 ? ((appState.currTotalRevenue / daysPassed) * daysInMonth / appState.totalTarget) * 100 : 0;
+            const actPct = appState.totalTarget > 0 ? (appState.currTotalRevenue / appState.totalTarget) * 100 : 0;
+
+            document.getElementById('kpiDailyNeed').textContent = dailyNeed.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('kpiRemainingTotal').textContent = `Thiếu: ${remTotal.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} tr`;
+            document.getElementById('kpiProjectedPct').textContent = `${projPct.toFixed(1).replace('.', ',')}%`;
+            document.getElementById('kpiActualPct').textContent = `(${actPct.toFixed(1).replace('.', ',')}%)`;
+            document.getElementById('kpiProgressBar').style.width = `${Math.min(100, projPct)}%`;
+
+            let changedList = [];
+            let safeCount = 0, nearCount = 0, hardCount = 0, shiftPendingCount = 0;
+            let tierDone = [], tierNear = [], tierPush = [], tierHard = [];
+
+            appState.items.forEach(item => {
+                const m = calcItemMetrics(item, baselineObj);
+                if (m.delta !== 0) changedList.push({ item, m });
+                if (!isItemShiftChecked(item) && m.remaining > 0) shiftPendingCount++;
+                if (m.projPct >= 100) safeCount++;
+                else if (m.projPct >= 50) nearCount++;
+                else hardCount++;
+
+                if (m.remaining <= 0 || m.projPct >= 100) {
+                    tierDone.push({ item, m });
+                } else if (m.projPct >= 70) {
+                    tierNear.push({ item, m });
+                } else if (m.projPct >= 40) {
+                    tierPush.push({ item, m });
+                } else {
+                    tierHard.push({ item, m });
+                }
+            });
+
+            renderStrategicTiers(tierDone, tierNear, tierPush, tierHard);
+            document.getElementById('kpiChangedCount').textContent = changedList.length;
+            document.getElementById('kpiTotalCategoriesLabel').textContent = `/ ${totalItemsCount} nhóm`;
+
+            document.querySelector('[data-filter="all"]').textContent = `Tất cả (${totalItemsCount})`;
+            document.querySelector('[data-filter="changed"]').textContent = `Thay đổi (${changedList.length})`;
+            document.querySelector('[data-filter="shift_pending"]').textContent = `Chưa xong ca (${shiftPendingCount})`;
+            document.querySelector('[data-filter="safe"]').textContent = `An toàn (${safeCount})`;
+            document.querySelector('[data-filter="near"]').textContent = `Gần đạt (${nearCount})`;
+            document.querySelector('[data-filter="hard"]').textContent = `Khó đạt (${hardCount})`;
+
+            const moversChips = document.getElementById('moversChips');
+            if (changedList.length === 0) {
+                moversChips.innerHTML = `<span class="text-xs text-slate-400 italic">Chưa có ngành hàng nào thay đổi số so với ${baselineObj.label}.</span>`;
+            } else {
+                changedList.sort((a, b) => b.m.delta - a.m.delta);
+                moversChips.innerHTML = changedList.map(({ item, m }) => {
+                    const sign = m.delta > 0 ? '+' : '';
+                    const suffix = item.unit === 'Tr.đ' ? ' tr' : ' SL';
+                    const badgeCls = m.delta > 0
+                        ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300'
+                        : 'bg-rose-50 border-rose-200 text-rose-800';
+                    const numCls = m.delta > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600';
+                    return `<span class="shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl border text-xs font-medium ${badgeCls}">
+                        <span>${item.short}:</span>
+                        <strong class="${numCls}">${sign}${formatNum(m.delta, item.unit)}${suffix}</strong>
+                    </span>`;
+                }).join('');
+            }
+        }
+
+        function renderStrategicTiers(tierDone, tierNear, tierPush, tierHard) {
+            const sortByPctDesc = (a, b) => b.m.projPct - a.m.projPct;
+            tierDone.sort(sortByPctDesc);
+            tierNear.sort(sortByPctDesc);
+            tierPush.sort(sortByPctDesc);
+            tierHard.sort(sortByPctDesc);
+
+            document.getElementById('tierDoneCount').textContent = `${tierDone.length} môn`;
+            document.getElementById('tierNearCount').textContent = `${tierNear.length} môn`;
+            document.getElementById('tierPushCount').textContent = `${tierPush.length} môn`;
+            document.getElementById('tierHardCount').textContent = `${tierHard.length} môn`;
+
+            const formatChipNeed = ({ item, m }) => {
+                const pct = Math.round(m.projPct);
+                if (m.remaining <= 0) {
+                    return `${item.short} <span class="opacity-75">(Xong)</span>`;
+                }
+                const unitTxt = item.unit === 'Tr.đ' ? 'tr' : '';
+                const needVal = item.unit === 'SL'
+                    ? (m.dailyNeed < 1 ? m.dailyNeed.toFixed(1).replace('.', ',') : Math.ceil(m.dailyNeed))
+                    : m.dailyNeed.toLocaleString('vi-VN', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+                return `${item.short} <span class="opacity-80">(${pct}% • ${needVal}${unitTxt}/ng)</span>`;
+            };
+
+            document.getElementById('tierDoneList').innerHTML = tierDone.length
+                ? tierDone.map(x => `<span class="px-2 py-1 rounded-lg bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-800 text-emerald-900 dark:text-emerald-300 text-[11px] font-medium">${x.item.short} <strong class="text-emerald-600 dark:text-emerald-400">${Math.round(x.m.projPct)}%</strong></span>`).join('')
+                : `<span class="text-[11px] text-emerald-700/70 italic">Chưa có môn đạt 100%</span>`;
+
+            document.getElementById('tierNearList').innerHTML = tierNear.length
+                ? tierNear.map(x => `<span class="px-2 py-1 rounded-lg bg-white dark:bg-slate-900 border border-sky-200 dark:border-sky-800 text-sky-900 dark:text-sky-300 text-[11px] font-medium">${formatChipNeed(x)}</span>`).join('')
+                : `<span class="text-[11px] text-sky-700/70 italic">Không có môn nào trong nhóm này</span>`;
+
+            document.getElementById('tierPushList').innerHTML = tierPush.length
+                ? tierPush.map(x => `<span class="px-2 py-1 rounded-lg bg-white dark:bg-slate-900 border border-amber-200 dark:border-amber-800 text-amber-950 dark:text-amber-300 text-[11px] font-medium">${formatChipNeed(x)}</span>`).join('')
+                : `<span class="text-[11px] text-amber-800/70 italic">Không có môn nào trong nhóm này</span>`;
+
+            document.getElementById('tierHardList').innerHTML = tierHard.length
+                ? tierHard.map(x => `<span class="px-2 py-1 rounded-lg bg-white dark:bg-slate-900 border border-rose-200 dark:border-rose-800 text-rose-950 dark:text-rose-300 text-[11px] font-medium">${formatChipNeed(x)}</span>`).join('')
+                : `<span class="text-[11px] text-rose-700/70 italic">Không có môn nào trong nhóm này</span>`;
+        }
+
+        function renderTable() {
+            const baselineObj = resolveCompareBaseline();
+            renderHeaderAndKPIs(baselineObj);
+
+            const searchInput = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('clearSearchBtn');
+            const query = (searchInput.value || '').toLowerCase().trim();
+            if (clearBtn) {
+                if (query) clearBtn.classList.remove('hidden');
+                else clearBtn.classList.add('hidden');
+            }
+
+            const sortMode = document.getElementById('sortSelect').value;
+
+            let enriched = appState.items.map(item => ({
+                item,
+                m: calcItemMetrics(item, baselineObj),
+                isShiftDone: isItemShiftChecked(item)
+            }));
+
+            enriched = enriched.filter(({ item, m, isShiftDone }) => {
+                if (currentFilter === 'changed' && m.delta === 0) return false;
+                if (currentFilter === 'shift_pending' && (isShiftDone || m.remaining <= 0)) return false;
+                if (currentFilter === 'safe' && m.projPct < 100) return false;
+                if (currentFilter === 'near' && (m.projPct < 50 || m.projPct >= 100)) return false;
+                if (currentFilter === 'hard' && m.projPct >= 50) return false;
+
+                if (query) {
+                    const hay = `${item.stt} ${item.name} ${item.short} ${item.note}`.toLowerCase();
+                    if (!hay.includes(query)) return false;
+                }
+                return true;
+            });
+
+            enriched.sort((a, b) => {
+                if (sortMode === 'pct_desc') {
+                    if (Math.abs(b.m.projPct - a.m.projPct) > 0.05) return b.m.projPct - a.m.projPct;
+                    return a.m.dailyNeed - b.m.dailyNeed;
+                } else if (sortMode === 'delta_desc') {
+                    if (b.m.delta !== a.m.delta) return b.m.delta - a.m.delta;
+                    return b.m.projPct - a.m.projPct;
+                } else if (sortMode === 'need_desc') {
+                    return b.m.dailyNeed - a.m.dailyNeed;
+                } else {
+                    return a.item.stt - b.item.stt;
+                }
+            });
+
+            renderMobileCards(enriched);
+            renderDesktopTable(enriched);
+        }
+
+        function renderMobileCards(enriched) {
+            const container = document.getElementById('mobileCardsContainer');
+            if (!container) return;
+
+            if (enriched.length === 0) {
+                container.innerHTML = `<div class="col-span-full py-10 text-center text-slate-400 text-xs">Không tìm thấy ngành hàng phù hợp bộ lọc hiện tại.</div>`;
+                return;
+            }
+
+            container.innerHTML = enriched.map(({ item, m, isShiftDone }, idx) => {
+                const isJustUpdated = justUpdatedStts.has(item.stt);
+                let cardBorder = 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900';
+                if (m.delta > 0) cardBorder = 'border-emerald-300 dark:border-emerald-700 bg-emerald-50/60 dark:bg-emerald-950/35';
+                else if (m.delta < 0) cardBorder = 'border-rose-300 bg-rose-50/60';
+                if (isJustUpdated) cardBorder += ' row-just-updated';
+
+                let pctBadgeClass = 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300';
+                let barColor = 'bg-rose-500';
+                if (m.projPct >= 100) {
+                    pctBadgeClass = 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300';
+                    barColor = 'bg-emerald-500';
+                } else if (m.projPct >= 50) {
+                    pctBadgeClass = 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300';
+                    barColor = 'bg-amber-500';
+                }
+
+                const deltaTag = m.delta !== 0
+                    ? `<span class="px-2 py-0.5 rounded-md font-bold text-[11px] ${m.delta > 0 ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'}">${m.delta > 0 ? '+' : ''}${formatNum(m.delta, item.unit)}</span>`
+                    : '';
+
+                const unmatchedTag = item.unmatchedDrive
+                    ? `<span class="inline-block ml-1 px-1.5 py-0.5 rounded bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300 text-[10px] font-semibold">Giữ số cũ</span>`
+                    : '';
+
+                const needText = m.remaining <= 0
+                    ? `<span class="text-emerald-600 dark:text-emerald-400 font-bold">Đã đạt 100%</span>`
+                    : `<strong class="text-rose-600 dark:text-rose-400">${m.dailyNeed.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong> <span class="text-[11px] text-slate-400">${item.unit}/ng</span>`;
+
+                return `
+                <div class="p-3 rounded-2xl border ${cardBorder} transition shadow-2xs flex flex-col justify-between gap-2.5 ${isShiftDone ? 'opacity-65' : ''}">
+                    <div class="flex items-start justify-between gap-2">
+                        <div class="flex items-start gap-2.5 min-w-0">
+                            <button type="button" onclick="toggleShiftCheck(${item.stt})" title="Tick đã hoàn thành chỉ tiêu ca hôm nay"
+                                class="mt-0.5 w-6 h-6 rounded-lg border flex items-center justify-center shrink-0 transition ${isShiftDone ? 'bg-emerald-600 border-emerald-600 text-white' : 'bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-transparent'}">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                            </button>
+                            <div class="min-w-0">
+                                <div class="font-bold text-slate-900 dark:text-white leading-snug ${isShiftDone ? 'line-through' : ''}">
+                                    <span class="text-slate-400 font-semibold mr-1">#${idx + 1}</span>${item.name.replace(/^T\d+\s*-\s*/i, '')}${unmatchedTag}
+                                </div>
+                                <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">${item.note}</div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-end gap-1 shrink-0">
+                            <span class="px-2 py-0.5 rounded-lg font-extrabold text-xs ${pctBadgeClass}">${Math.round(m.projPct)}%</span>
+                            ${deltaTag}
+                        </div>
+                    </div>
+
+                    <div class="w-full bg-slate-200/70 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                        <div class="${barColor} h-1.5 rounded-full transition-all duration-300" style="width: ${Math.min(100, m.projPct)}%"></div>
+                    </div>
+
+                    <div class="flex items-center justify-between gap-2 pt-1 border-t border-slate-100 dark:border-slate-800/80 text-xs">
+                        <div class="space-y-0.5">
+                            <div class="text-[11px] text-slate-500 dark:text-slate-400">
+                                MT: <strong class="text-slate-700 dark:text-slate-300">${formatNum(item.target, item.unit)}</strong> • Thiếu: <strong class="text-slate-700 dark:text-slate-300">${formatNum(m.remaining, item.unit)}</strong>
+                            </div>
+                            <div>Cần chạy: ${needText}</div>
+                        </div>
+
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <span class="text-[11px] text-slate-400">LK:</span>
+                            <input type="number" inputmode="decimal" step="${item.unit === 'SL' ? '1' : '0.01'}" value="${item.curr}"
+                                onchange="updateItemCurr(${item.stt}, this.value)"
+                                class="w-20 min-h-[38px] text-right font-extrabold text-navy-900 dark:text-sky-300 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-200 rounded-xl px-2 py-1 focus:outline-none">
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function renderDesktopTable(enriched) {
+            const tbody = document.getElementById('tableBody');
+            if (!tbody) return;
+
+            if (enriched.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="11" class="py-8 text-center text-slate-400">Không tìm thấy ngành hàng phù hợp bộ lọc hiện tại.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = enriched.map(({ item, m, isShiftDone }, idx) => {
+                const isChanged = m.delta !== 0;
+                const isJustUpdated = justUpdatedStts.has(item.stt);
+
+                let rowClass = 'hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors';
+                let stickyBg = 'bg-white dark:bg-slate-900';
+                if (m.delta > 0) {
+                    rowClass = 'row-changed';
+                    stickyBg = 'bg-emerald-50 dark:bg-emerald-950';
+                } else if (m.delta < 0) {
+                    rowClass = 'bg-rose-50/70';
+                    stickyBg = 'bg-rose-50';
+                }
+                if (isJustUpdated) rowClass += ' row-just-updated';
+
+                let deltaBadge = `<span class="text-slate-300 dark:text-slate-600">—</span>`;
+                if (m.delta > 0) {
+                    deltaBadge = `<span class="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-600 text-white font-bold text-[0.92em]">+${formatNum(m.delta, item.unit)}</span>`;
+                } else if (m.delta < 0) {
+                    deltaBadge = `<span class="inline-flex items-center px-2 py-0.5 rounded-md bg-rose-600 text-white font-bold text-[0.92em]">${formatNum(m.delta, item.unit)}</span>`;
+                }
+
+                let pctBadgeClass = 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300';
+                if (m.projPct >= 100) pctBadgeClass = 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300';
+                else if (m.projPct >= 50) pctBadgeClass = 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300';
+
+                const unmatchedBadge = item.unmatchedDrive
+                    ? `<span class="px-1.5 py-0.5 rounded bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300 text-[10px] font-semibold">Giữ số cũ</span>`
+                    : '';
+
+                const dailyNeedDisplay = m.remaining <= 0
+                    ? `<span class="text-emerald-600 dark:text-emerald-400 font-semibold">Đạt 100%</span>`
+                    : `<span class="font-bold text-slate-900 dark:text-white">${m.dailyNeed.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>`;
+
+                return `
+                <tr class="${rowClass} ${isShiftDone ? 'opacity-60' : ''}">
+                    <td class="py-2.5 px-2 text-center">
+                        <button type="button" onclick="toggleShiftCheck(${item.stt})" class="w-5 h-5 rounded-md border inline-flex items-center justify-center transition ${isShiftDone ? 'bg-emerald-600 border-emerald-600 text-white' : 'border-slate-300 dark:border-slate-600 text-transparent'}">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                        </button>
+                    </td>
+                    <td class="sticky-col-name ${stickyBg} py-2.5 px-3 shadow-[2px_0_5px_rgba(0,0,0,0.04)]">
+                        <div class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5 flex-wrap ${isShiftDone ? 'line-through' : ''}">
+                            <span class="text-slate-400 font-normal text-[0.9em]">${idx + 1}.</span>
+                            <span>${item.name.replace(/^T\d+\s*-\s*/i, '')}</span>
+                            ${isChanged ? '<span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>' : ''}
+                            ${unmatchedBadge}
+                        </div>
+                        <div class="text-[0.82em] text-slate-400">${item.short}</div>
+                    </td>
+                    <td class="py-2.5 px-2 text-center">
+                        <span class="px-1.5 py-0.5 rounded text-[0.84em] font-semibold ${item.unit === 'SL' ? 'bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'}">${item.unit}</span>
+                    </td>
+                    <td class="py-2.5 px-3 text-right font-medium text-slate-600 dark:text-slate-300">${formatNum(item.target, item.unit)}</td>
+                    <td class="py-2.5 px-3 text-right text-slate-400">${formatNum(m.baseVal, item.unit)}</td>
+                    <td class="py-2.5 px-3 text-right">
+                        <input type="number" inputmode="decimal" step="${item.unit === 'SL' ? '1' : '0.01'}" value="${item.curr}"
+                            onchange="updateItemCurr(${item.stt}, this.value)"
+                            class="w-20 text-right font-extrabold text-navy-900 dark:text-sky-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-navy-800 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-200 rounded-lg px-2 py-1 focus:outline-none">
+                    </td>
+                    <td class="py-2.5 px-3 text-right">${deltaBadge}</td>
+                    <td class="py-2.5 px-3 text-right font-medium text-slate-700 dark:text-slate-300">${formatNum(m.remaining, item.unit)}</td>
+                    <td class="py-2.5 px-3 text-right">${dailyNeedDisplay}</td>
+                    <td class="py-2.5 px-3 text-center">
+                        <span class="inline-block px-2 py-0.5 rounded-lg font-extrabold text-[0.92em] ${pctBadgeClass}">${Math.round(m.projPct)}%</span>
+                    </td>
+                    <td class="py-2.5 px-3 text-[0.92em] text-slate-600 dark:text-slate-400">${item.note}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        // Modal 1: JSON Update Parser
+        function openPasteModal() {
+            document.getElementById('pasteModal').classList.remove('hidden');
+        }
+
+        function closePasteModal() {
+            document.getElementById('pasteModal').classList.add('hidden');
+        }
+
+        function copyGeminiPrompt() {
+            copyTextToClipboard(document.getElementById('geminiPromptBox').value, "Đã copy câu lệnh chuẩn linh động theo tháng!");
+        }
+
+        function fillSampleUpdate() {
+            const dim = appState.daysInMonth || 30;
+            const sampleCats = appState.items.map(item => {
+                let nextCurr = item.curr;
+                if (item.short === 'LG') nextCurr = Number((item.curr + 8.50).toFixed(2));
+                if (item.short === 'HC') nextCurr = Number((item.curr + 28.00).toFixed(2));
+                if (item.short === 'Android') nextCurr = Number((item.curr + 14.20).toFixed(2));
+                return {
+                    name: item.name,
+                    target: item.target,
+                    curr: nextCurr,
+                    unit: item.unit,
+                    matched: true
+                };
+            });
+
+            const sampleObj = {
+                ngay_da_chay: Math.min(dim, appState.daysPassed + 1),
+                tong_ngay_thang: dim,
+                tong_target: appState.totalTarget,
+                doanh_thu_lk: Number((appState.currTotalRevenue + 42.50).toFixed(2)),
+                categories: sampleCats
+            };
+            document.getElementById('pasteArea').value = JSON.stringify(sampleObj, null, 2);
+        }
+
+        function findItemByKey(key, itemsList) {
+            const list = itemsList || appState.items;
+            const rawTrim = String(key).trim();
+
+            let found = list.find(it => it.name.toLowerCase() === rawTrim.toLowerCase());
+            if (found) return found;
+
+            const normKey = normalizeText(rawTrim);
+            if (normKey) {
+                found = list.find(it => {
+                    if (normalizeText(it.name) === normKey) return true;
+                    if (normalizeText(it.short) === normKey) return true;
+                    return (it.aliases || []).some(a => normalizeText(a) === normKey);
+                });
+                if (found) return found;
+
+                // Tránh khớp nhầm nhóm ngắn (Sim vs Sim ĐMX, Điện tử vs Điện tử Samsung/TCL)
+                const exactOnly = ['sim', 'dien tu', 'bao hiem'];
+                if (normKey.length >= 6 && !exactOnly.includes(normKey)) {
+                    found = list.find(it => {
+                        const nFull = normalizeText(it.name);
+                        if (exactOnly.includes(nFull)) return false;
+                        return nFull.includes(normKey) || normKey.includes(nFull);
+                    });
+                    if (found) return found;
+                }
+            }
+
+            const sttNum = parseInt(rawTrim, 10);
+            if (!isNaN(sttNum) && String(sttNum) === rawTrim) {
+                return list.find(it => it.stt === sttNum) || null;
+            }
+
+            return null;
+        }
+
+        function processPastedData() {
+            const raw = document.getElementById('pasteArea').value.trim();
+            if (!raw) {
+                showToast("Vui lòng dán khối JSON vào ô trống!");
+                return;
+            }
+
+            let cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '').trim();
+            const firstBrace = cleaned.indexOf('{');
+            const lastBrace = cleaned.lastIndexOf('}');
+            if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+                cleaned = cleaned.slice(firstBrace, lastBrace + 1);
+            }
+
+            let parsedJson;
+            try {
+                parsedJson = JSON.parse(cleaned);
+            } catch (err) {
+                showToast("JSON chưa đúng định dạng, vui lòng kiểm tra lại!");
+                return;
+            }
+
+            applyJsonPayload(parsedJson, null);
+        }
+
+        function applyJsonPayload(parsedJson, sourceTag) {
+            if (!parsedJson || typeof parsedJson !== 'object') {
+                showToast("Dữ liệu JSON không hợp lệ!");
+                return;
+            }
+
+            const now = new Date();
+            const pad = n => String(n).padStart(2, '0');
+            appState.lastSyncLabel = `${pad(now.getHours())}:${pad(now.getMinutes())} (${pad(now.getDate())}/${pad(now.getMonth() + 1)})`;
+
+            const oldDaysPassed = appState.daysPassed;
+            const oldMonthPrefix = appState.monthPrefix || 'T11';
+
+            // Xác định tháng mới từ payload (nếu có)
+            let incomingMonthPrefix = parsedJson.thang_prefix || '';
+            if (!incomingMonthPrefix && Array.isArray(parsedJson.categories) && parsedJson.categories.length > 0) {
+                incomingMonthPrefix = extractMonthPrefix(parsedJson.categories[0].name);
+            }
+            const parsedDays = Number(parsedJson.ngay_da_chay);
+            const isNewMonth = (incomingMonthPrefix && incomingMonthPrefix !== oldMonthPrefix)
+                || (!isNaN(parsedDays) && parsedDays >= 1 && parsedDays < oldDaysPassed && oldDaysPassed >= 20);
+
+            if (incomingMonthPrefix) {
+                appState.monthPrefix = incomingMonthPrefix;
+            }
+            const parsedDim = Number(parsedJson.tong_ngay_thang);
+            if (!isNaN(parsedDim) && parsedDim >= 28 && parsedDim <= 31) {
+                appState.daysInMonth = parsedDim;
+            } else if (incomingMonthPrefix) {
+                appState.daysInMonth = getDaysForMonthPrefix(incomingMonthPrefix);
+            }
+
+            if (!isNaN(parsedDays) && parsedDays >= 1 && parsedDays <= 31) {
+                appState.daysPassed = parsedDays;
+            }
+
+            const parsedTarget = Number(parsedJson.tong_target);
+            if (!isNaN(parsedTarget) && parsedTarget > 0) {
+                appState.totalTarget = Number(parsedTarget.toFixed(2));
+            }
+
+            const parsedRev = Number(parsedJson.doanh_thu_lk);
+            if (!isNaN(parsedRev) && parsedRev >= 0) {
+                // Nếu sang tháng mới chấp nhận mọi số >= 0; nếu cùng tháng chỉ chặn lỗi đọc nhầm cột quá thấp (< 50% lũy kế cũ)
+                const isReasonableSameMonth = isNewMonth || appState.currTotalRevenue <= 0 || parsedRev >= appState.currTotalRevenue * 0.5;
+                if (isReasonableSameMonth && parsedRev !== appState.currTotalRevenue) {
+                    appState.prevTotalRevenue = isNewMonth ? 0 : appState.currTotalRevenue;
+                    appState.currTotalRevenue = Number(parsedRev.toFixed(2));
+                }
+            }
+
+            if (isNewMonth) {
+                appState.shiftCheckedNames = [];
+            }
+
+            const snapshotBeforeMap = {};
+            appState.items.forEach(it => {
+                snapshotBeforeMap[it.name] = it.curr;
+            });
+
+            const baselineBeforeUpdate = resolveCompareBaseline();
+            justUpdatedStts.clear();
+
+            // CHẾ ĐỘ ĐỘNG TOÀN DIỆN: Khi Drive / JSON gửi kèm danh sách categories[]
+            if (Array.isArray(parsedJson.categories) && parsedJson.categories.length > 0) {
+                const validCats = parsedJson.categories.filter(cat => {
+                    const cn = String(cat.name || '').trim().toUpperCase();
+                    return cn && cn !== 'LŨY KẾ' && cn !== 'LUỸ KẾ' && cn !== 'TARGET' && cn !== 'MỤC TIÊU';
+                });
+
+                if (validCats.length >= 25) {
+                    const newItems = [];
+                    let updatedCount = 0;
+                    let matchedDriveCount = 0;
+                    let preservedUnmatchedCount = 0;
+
+                    validCats.forEach((cat, idx) => {
+                        const catName = String(cat.name || '').trim();
+                        const existingItem = findItemByKey(catName, appState.items) || findItemByKey(catName, INITIAL_STATE.items);
+                        const newStt = idx + 1;
+                        const isMatchedOnDrive = cat.matched !== false;
+
+                        let newCurr = Number(cat.curr);
+                        if ((isNaN(newCurr) || newCurr === 0) && isMatchedOnDrive && parsedJson.data && typeof parsedJson.data === 'object') {
+                            const fallbackVal = getSnapshotItemValue(parsedJson.data, existingItem || { name: catName, short: autoGenerateShortName(catName), aliases: [] });
+                            if (fallbackVal > 0) newCurr = fallbackVal;
+                        }
+
+                        // CHỐT CHẶN CHỐNG VỀ 0:
+                        // 1. Apps Script đánh dấu matched: false -> giữ nguyên số đang có
+                        // 2. Cùng tháng, ngành đang có lũy kế > 0 nhưng Drive trả về đúng 0 do lệch tab/khối -> giữ nguyên số cũ & gắn nhãn kiểm tra
+                        let cleanCurr;
+                        let unmatchedFlag = false;
+                        const existingCurr = existingItem ? existingItem.curr : 0;
+                        const suspiciousDropToZero = !isNewMonth && existingCurr > 0 && (!isNaN(newCurr) && newCurr === 0) && sourceTag === "Đồng bộ từ Google Drive";
+
+                        if (!isMatchedOnDrive || suspiciousDropToZero) {
+                            cleanCurr = isNewMonth ? 0 : existingCurr;
+                            unmatchedFlag = true;
+                            preservedUnmatchedCount++;
+                        } else {
+                            cleanCurr = isNaN(newCurr) ? 0 : Number(newCurr.toFixed(2));
+                            matchedDriveCount++;
+                        }
+
+                        const newTarget = Number(cat.target);
+                        const cleanTarget = (!isNaN(newTarget) && newTarget > 0)
+                            ? Number(newTarget.toFixed(2))
+                            : (existingItem ? existingItem.target : 0);
+                        const cleanUnit = (cat.unit === 'SL' || cat.unit === 'Tr.đ')
+                            ? cat.unit
+                            : (existingItem ? existingItem.unit : 'Tr.đ');
+
+                        const lookupProxy = existingItem || { stt: newStt, name: catName, short: autoGenerateShortName(catName), aliases: [normalizeText(catName)] };
+                        let baseVal = isNewMonth ? 0 : getSnapshotItemValue(baselineBeforeUpdate.itemMap, lookupProxy);
+
+                        const prevScreenVal = isNewMonth ? 0 : (existingItem ? existingItem.curr : getSnapshotItemValue(snapshotBeforeMap, lookupProxy));
+                        if (!isNewMonth && Number((cleanCurr - baseVal).toFixed(2)) === 0 && Number((cleanCurr - prevScreenVal).toFixed(2)) !== 0) {
+                            baseVal = prevScreenVal;
+                        }
+
+                        if (!unmatchedFlag && Number((cleanCurr - baseVal).toFixed(2)) !== 0) {
+                            justUpdatedStts.add(newStt);
+                            updatedCount++;
+                        }
+
+                        newItems.push({
+                            stt: newStt,
+                            name: catName,
+                            short: existingItem ? existingItem.short : autoGenerateShortName(catName),
+                            unit: cleanUnit,
+                            target: cleanTarget,
+                            prev: baseVal,
+                            curr: cleanCurr,
+                            unmatchedDrive: unmatchedFlag,
+                            note: existingItem ? existingItem.note : autoGenerateNote(catName),
+                            aliases: existingItem ? existingItem.aliases : [normalizeText(catName)]
+                        });
+                    });
+
+                    if (newItems.length > 0) {
+                        appState.items = newItems;
+                        saveState();
+                        recordHistorySnapshot(sourceTag, false);
+                        closePasteModal();
+                        setFilter('all');
+
+                        if (preservedUnmatchedCount > 0) {
+                            showToast(`Khớp ${matchedDriveCount}/${newItems.length} ngành (${updatedCount} nhảy số). Đã bảo vệ giữ số cũ cho ${preservedUnmatchedCount} ngành!`);
+                        } else {
+                            showToast(updatedCount > 0
+                                ? `Đồng bộ chuẩn ${matchedDriveCount}/${newItems.length} ngành — ${updatedCount} mục nhảy số!`
+                                : `Đã đồng bộ chuẩn ${matchedDriveCount}/${newItems.length} ngành hàng!`);
+                        }
+                        return;
+                    }
+                } else {
+                    if (appState.items.length < 25) {
+                        appState.items = JSON.parse(JSON.stringify(INITIAL_STATE.items));
+                    }
+                    let updatedCount = 0;
+                    validCats.forEach(cat => {
+                        if (cat.matched === false) return;
+                        const catName = String(cat.name || '').trim();
+                        const matchedItem = findItemByKey(catName, appState.items);
+                        const val = Number(cat.curr);
+                        if (matchedItem && !isNaN(val) && val >= 0) {
+                            if (!isNewMonth && matchedItem.curr > 0 && val === 0 && sourceTag === "Đồng bộ từ Google Drive") {
+                                matchedItem.unmatchedDrive = true;
+                                return;
+                            }
+                            const prevScreenVal = matchedItem.curr;
+                            let baseVal = baselineBeforeUpdate.itemMap[matchedItem.name] !== undefined
+                                ? baselineBeforeUpdate.itemMap[matchedItem.name]
+                                : getSnapshotItemValue(baselineBeforeUpdate.itemMap, matchedItem);
+                            if (Number((val - baseVal).toFixed(2)) === 0 && Number((val - prevScreenVal).toFixed(2)) !== 0) {
+                                baseVal = prevScreenVal;
+                            }
+                            matchedItem.prev = baseVal;
+                            matchedItem.curr = Number(val.toFixed(2));
+                            matchedItem.unmatchedDrive = false;
+                            if (Number(cat.target) > 0) matchedItem.target = Number(Number(cat.target).toFixed(2));
+                            if (Number((matchedItem.curr - baseVal).toFixed(2)) !== 0) {
+                                justUpdatedStts.add(matchedItem.stt);
+                                updatedCount++;
+                            }
+                        }
+                    });
+                    saveState();
+                    recordHistorySnapshot(sourceTag, false);
+                    closePasteModal();
+                    setFilter('all');
+                    showToast(`Đã đồng bộ ${validCats.length} mục khớp từ Drive (${updatedCount} mục thay đổi)!`);
+                    return;
+                }
+            }
+
+            // CHẾ ĐỘ TƯƠNG THÍCH NGƯỢC: Nếu JSON chỉ có object data{}
+            const payloadMap = (typeof parsedJson.data === 'object' && !Array.isArray(parsedJson.data))
+                ? parsedJson.data
+                : parsedJson;
+
+            let matchedCount = 0;
+            let updatedCount = 0;
+
+            Object.entries(payloadMap).forEach(([key, rawVal]) => {
+                if (['ngay_da_chay', 'tong_ngay_thang', 'doanh_thu_lk', 'tong_target', 'categories', 'thang_prefix'].includes(key)) return;
+                const val = Number(rawVal);
+                if (isNaN(val) || val < 0) return;
+
+                const matchedItem = findItemByKey(key, appState.items);
+                if (matchedItem) {
+                    if (!isNewMonth && matchedItem.curr > 0 && val === 0 && sourceTag === "Đồng bộ từ Google Drive") {
+                        matchedItem.unmatchedDrive = true;
+                        return;
+                    }
+                    matchedCount++;
+                    const baseVal = baselineBeforeUpdate.itemMap[matchedItem.name] !== undefined
+                        ? baselineBeforeUpdate.itemMap[matchedItem.name]
+                        : getSnapshotItemValue(baselineBeforeUpdate.itemMap, matchedItem);
+                    matchedItem.prev = baseVal;
+                    matchedItem.curr = Number(val.toFixed(2));
+                    matchedItem.unmatchedDrive = false;
+                    if (val !== baseVal) {
+                        justUpdatedStts.add(matchedItem.stt);
+                        updatedCount++;
+                    }
+                }
+            });
+
+            if (matchedCount === 0) {
+                showToast("Không khớp được tên ngành hàng nào! Mở Cài đặt → Xem JSON Drive để kiểm tra.");
+                return;
+            }
+
+            saveState();
+            recordHistorySnapshot(sourceTag, false);
+            closePasteModal();
+            setFilter('all');
+            showToast(updatedCount > 0
+                ? `Đã đồng bộ đủ ${appState.items.length} ngành, có ${updatedCount} mục thay đổi!`
+                : `Đã đồng bộ chính xác ${matchedCount}/${appState.items.length} ngành hàng!`);
+        }
+
+        // Modal 2: Export Form Ca
+        function openFormExportModal() {
+            const daysInMonth = appState.daysInMonth || 30;
+            const daysLeft = Math.max(1, daysInMonth - appState.daysPassed);
+            const remTotal = Math.max(0, appState.totalTarget - appState.currTotalRevenue);
+            const dailyRevNeed = Math.round(remTotal / daysLeft);
+            const baselineObj = resolveCompareBaseline();
+
+            const sorted = appState.items
+                .map(item => ({ item, m: calcItemMetrics(item, baselineObj) }))
+                .sort((a, b) => {
+                    if (Math.abs(b.m.projPct - a.m.projPct) > 0.05) return b.m.projPct - a.m.projPct;
+                    return a.m.dailyNeed - b.m.dailyNeed;
+                });
+
+            const lines = sorted.map(({ item, m }) => {
+                let targetText = '0';
+                if (m.remaining > 0) {
+                    if (item.unit === 'SL') {
+                        targetText = m.dailyNeed < 1 ? m.dailyNeed.toFixed(1).replace('.0', '') : Math.ceil(m.dailyNeed).toString();
+                    } else if (m.dailyNeed >= 1) {
+                        const rounded = Math.round(m.dailyNeed * 2) / 2;
+                        targetText = `${rounded}tr`;
+                    } else {
+                        const k = Math.max(50, Math.round((m.dailyNeed * 1000) / 50) * 50);
+                        targetText = k >= 1000 ? `${(k / 1000).toFixed(1)}tr` : `${k}k`;
+                    }
+                }
+                const pctText = `${Math.round(m.projPct)}%`;
+                return `📌${item.short}: ${targetText} *(${pctText})*`;
+            });
+
+            const text = [
+                `👉Tên Thuận`,
+                `👉Ca 12456`,
+                `🎯Doanh thu: ~${dailyRevNeed}tr (mốc ca 65-75tr)`,
+                `🎁Thi đua *(xếp theo % từ cao xuống thấp - còn ${daysLeft} ngày)*`,
+                ...lines
+            ].join('\n');
+
+            document.getElementById('exportTextArea').value = text;
+            document.getElementById('exportModal').classList.remove('hidden');
+        }
+
+        function closeExportModal() {
+            document.getElementById('exportModal').classList.add('hidden');
+        }
+
+        function copyExportForm() {
+            copyTextToClipboard(document.getElementById('exportTextArea').value, "Đã copy Form Target Ca 12456!");
+        }
+
+        // Modal 4: Settings & Backup
+        function openSettingsModal() {
+            document.getElementById('settingsModal').classList.remove('hidden');
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('settingsModal').classList.add('hidden');
+        }
+
+        function exportFullBackup() {
+            const bundle = {
+                version: 3,
+                state: appState,
+                history: historyLog
+            };
+            const str = JSON.stringify(bundle);
+            document.getElementById('backupArea').value = str;
+            copyTextToClipboard(str, "Đã copy toàn bộ mã sao lưu + lịch sử 45 ngày!");
+        }
+
+        function importFullBackup() {
+            const raw = document.getElementById('backupArea').value.trim();
+            if (!raw) {
+                showToast("Vui lòng dán mã sao lưu vào ô trống!");
+                return;
+            }
+            try {
+                const parsed = JSON.parse(raw);
+                if (parsed && parsed.state && Array.isArray(parsed.state.items) && parsed.state.items.length > 0) {
+                    appState = parsed.state;
+                    if (!appState.daysInMonth) appState.daysInMonth = 30;
+                    if (!Array.isArray(appState.shiftCheckedNames)) appState.shiftCheckedNames = [];
+                    saveState();
+                    if (Array.isArray(parsed.history)) {
+                        historyLog = pruneOldHistory(parsed.history);
+                        saveHistory(historyLog);
+                    }
+                    closeSettingsModal();
+                    renderTable();
+                    showToast("Đã khôi phục toàn bộ dữ liệu từ mã sao lưu!");
+                } else {
+                    showToast("Mã sao lưu không hợp lệ!");
+                }
+            } catch (e) {
+                showToast("Lỗi đọc mã sao lưu, vui lòng kiểm tra lại!");
+            }
+        }
+
+        function resetToDefault() {
+            appState = JSON.parse(JSON.stringify(INITIAL_STATE));
+            justUpdatedStts.clear();
+            saveState();
+            setFilter('all');
+            showToast("Đã khôi phục dữ liệu mặc định!");
+        }
+
+        // Khởi chạy ứng dụng
+        initPwaSupport();
+        loadPrefs();
+        renderTable();
+        if (autoSyncOnLoad && appsScriptUrl && appsScriptUrl.startsWith('http')) {
+            setTimeout(() => syncFromGoogleDrive(true), 400);
+        }
+    </script>
+</body>
+</html>
